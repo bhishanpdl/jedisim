@@ -34,7 +34,23 @@
 ##==============================================
 ## OS generated files
 ##==============================================
+_build.*
+.sconsign.dblite
+.sconf_temp
+*.dylib
+*.o
+*.os
+*.pyc
+*.so
+*~
+#*
+*#
 .DS_Store
+config.log
+tests/.tests
+Dups/*.cfgc
+version.py
+*.dSYM
 .DS_Store?
 ._*
 .Spotlight-V100
