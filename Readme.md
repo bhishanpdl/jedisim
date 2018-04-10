@@ -4,7 +4,11 @@
 Jedisim is a program to generate the realistic galaxy cluster simulations from the real
 galaxy observation observations.
 
-> **Copyright**: The original source code was developed by *Daniel Parker* and *Ian Dell'Antonio*, maintained and updated by *Bhishan Poudel* . <br>
+> **Copyright**: The original source code was developed by *Daniel Parker* 
+  and *Ian Dell'Antonio* of Brown University in around 2013.
+  I forked the project in 2014 and customized the jedisim for the color dependent analysis.
+  I am maintaining this repo from 2014 (though I uploaded it very late) and is being changed constantly.
+  There is also another repo with more generalized version maintained by [Binyang Liu of Brown University](https://github.com/rbliu/jedisim).<br>
 
 -----------
 
