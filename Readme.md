@@ -80,7 +80,7 @@ Dependencies:
 * The source codes are in "jedisim_sources/". These are the C programs, 
   which needs to be compiled if we do any changes to these files.
 
-## Post Usage
+## After the jedisim
 
 * The jedisim outputs, e.g. `jedisim_out/jout_z0.7_2018_04_20_08/z0.7/lsst/lsst_z0.7_0.fits`
   are used in DMStack Mass estimation pipeline to estimate the mass of the 
