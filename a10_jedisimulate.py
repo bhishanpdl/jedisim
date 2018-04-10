@@ -191,7 +191,7 @@ def lsst_monochromatic(config):
                               config['noise_mean'],
                               config["lsst_mono"]
                               ])
-                              
+
     # XXX: Added  Mar 25, 2018
     # Add fake wcs
     # DMstack obs_file needs WCS info
@@ -216,7 +216,7 @@ def lsst_chromatic(configb,configd,configm):
     dat = fits.getdata(configb['rescaled_outfileb']) +   \
           fits.getdata(configd['rescaled_outfiled'])
     fits.writeto(configm["lsst_unnoised"], dat,
-             header = fits.getheader(configb['rescaled_outfileb']), overwrite=True)
+             header = fits.getheader(configb['rescaled_outfileb']), clobber=True)
 
 
     # Add noise to  chromatic image and choose this as lsst final output.
@@ -245,7 +245,7 @@ def main():
 
     # Get factors to multiply bulge and disk
     fb, fd = np.genfromtxt(configm['bd_flux_rat'], dtype=float, unpack=True)
-    
+
     lsst_TDCR(configb, configb['psfb'], configb['rescaled_outfileb'],fb)  # out 3
     lsst_TDCR(configd, configd['psfd'], configd['rescaled_outfiled'],fd)  # out 4
     lsst_TDCR(configm, configm['psfm'], configm['rescaled_outfilem'],1.0) # out 5

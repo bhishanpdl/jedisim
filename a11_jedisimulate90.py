@@ -125,7 +125,7 @@ def lsst_TDCR(config, psf_name, rescaled_outfile90,multiply_value):
 
     # XXX: ADDED  Mar 25, 2018
     add_stars(config['90_HST_image'], config['n_stars'], config['star_value'],config['star_positions'])
-    
+
     # Convolve the given single fitsfile with given PSF and write 6 bands
     # of convolved images.
     # E.g. convolve HST.fits with psfb.fits to get 6 bands of convolved images.
@@ -184,9 +184,9 @@ def lsst_chromatic(configb,configd,configm):
     # Combine lsst_bulge with lsst_disk and call it lsst_unnoised.fits
     dat = fits.getdata(configb['90_rescaled_outfileb']) +\
           fits.getdata(configd['90_rescaled_outfiled'])
-          
-    fits.writeto(configm["90_lsst_unnoised"], dat, 
-        header = fits.getheader(configb['90_rescaled_outfileb']),overwrite=True)
+
+    fits.writeto(configm["90_lsst_unnoised"], dat,
+        header = fits.getheader(configb['90_rescaled_outfileb']),clobber=True)
 
 
     # Add noise to  chromatic image and choose this as lsst final output.

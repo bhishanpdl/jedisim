@@ -21,9 +21,9 @@ import random
 from astropy.io import fits
 from astropy import wcs
 
-def add_wcs(cluster):
-    # Read cluster
-    cluster_hdu = fits.open(cluster)
+def add_wcs(field):
+    # Read field
+    field_hdu = fits.open(field)
 
     # Get fake wcs from astropy
     w = wcs.WCS(naxis=2)
@@ -34,15 +34,15 @@ def add_wcs(cluster):
     wcs_hdr = w.to_header()
 
     # Add fake wcs to header of output file
-    hdr = cluster_hdu[0].header
+    hdr = field_hdu[0].header
     hdr += wcs_hdr
 
     # Write output file
-    cluster_hdu.writeto(cluster,clobber=True)
-    cluster_hdu.close()
+    field_hdu.writeto(field,clobber=True)
+    field_hdu.close()
 
     # Print
-    print('Fake WCS added to the galaxy cluster: {}'.format(cluster))
+    print('Fake WCS added to the galaxy field: {}'.format(field))
 
 def replace_outfolder(outfolder):
     """Replace given directory."""
@@ -181,15 +181,15 @@ def age(z):
     #
     return age_univ
 
-#
-def create_stars_positions(cluster, n_stars,star_value, star_positions):
+# We do it just want, do not call this function from jedisim scripts.
+def create_stars_positions(field, n_stars,star_value, star_positions):
     # Get values
     n_stars = int(n_stars)
-    NAXIS1 = fits.getheader(cluster)['NAXIS1'] # 12288 
-    NAXIS2 = fits.getheader(cluster)['NAXIS2'] # 12288 
+    NAXIS1 = fits.getheader(field)['NAXIS1'] # 12288
+    NAXIS2 = fits.getheader(field)['NAXIS2'] # 12288
 
 
-    # Randomly put stars 
+    # Randomly put stars
     with open(star_positions,'w') as fo:
       for i in range(0,n_stars):
           x = np.random.randint(0, NAXIS1)
@@ -197,42 +197,45 @@ def create_stars_positions(cluster, n_stars,star_value, star_positions):
           out = '{} {}\n'.format(x,y)
           fo.write(out)
 
-def add_stars(cluster, n_stars, star_value,star_positions):
-    
+def add_stars(field, n_stars, star_value,star_positions):
+  # NOTE: from numpy to ds9 image: x,y ==> y+1, x+1
+  # i.e. data[1][5] in numpy is ds9 image position 6,2.
+  
   # Make types good
   n_stars = int(n_stars)
   star_value = float(star_value)
-  
-  # Read cluster
-  cluster_hdu = fits.open(cluster)
-  
+
+  # Read image
+  field_hdu = fits.open(field)
+
   # shape
   # NOTE: NAXIS = 2 means data has two axes
-  NAXIS1 = fits.getheader(cluster)['NAXIS1'] # 12288 
-  NAXIS2 = fits.getheader(cluster)['NAXIS2'] # 12288 
+  NAXIS1 = fits.getheader(field)['NAXIS1'] # 12288
+  NAXIS2 = fits.getheader(field)['NAXIS2'] # 12288
 
 
-  # Randomly put stars inside the cluster
+  # Randomly put stars inside the field
   with open(star_positions,'r') as fi:
       for line in fi.readlines():
           x,y = line.split()
           x,y = int(x), int(y)
           # update the value
-          cluster_hdu[0].data[y, x] = star_value
- 
-  # Write output file
-  cluster_hdu.writeto(cluster,clobber=True)
-  cluster_hdu.close()
+          field_hdu[0].data[y, x] = star_value
 
+  # Write output file
+  field_hdu.writeto(field,clobber=True)
+  field_hdu.close()
+
+#
 def notify():
     """Using desktop notifications in macos.
-   
+
     ..note::
 
     To keep the notification button until you close it chage the
     system preferences of the notifications.
     System Preferences > Nofitications > Script Editor > Check all and choose alert
-     
+
     """
     import time
     import os
@@ -243,8 +246,6 @@ def notify():
     notif = osa + msg + title + "'&"
     os.system(notif)
 
-
- 
 def main():
     """Run main function."""
     age(1.5)

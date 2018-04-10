@@ -63,7 +63,7 @@ def create_psfbd(b_or_d, ofits):
 
     # write fitsfile
     hdu = fits.PrimaryHDU(dat)
-    hdu.writeto(ofits,overwrite=True)
+    hdu.writeto(ofits,clobber=True)
 
 def create_psfmono(frb, frd, psfb, psfd, ofits):
     """Create PSF for monochromatic image.
@@ -102,7 +102,7 @@ def create_psfmono(frb, frd, psfb, psfd, ofits):
 
     # write fitsfile
     hdu = fits.PrimaryHDU(dat)
-    hdu.writeto(ofits,overwrite=True)
+    hdu.writeto(ofits,clobber=True)
 
 def main():
     """Run main function."""

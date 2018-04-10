@@ -1,11 +1,11 @@
 # This is the config file for jedisim.py and associated programs.
 #
-# Conventions used in this file: 
+# Conventions used in this file:
 # 1) There should be no empty lines in this file.
 # 2) values should be enclosed by ""  not ''.
 # 3) There should not be spaces around = sign.
 #
-# key=float_value  or key="string_value"    
+# key=float_value  or key="string_value"
 # DO NOT USE THESE:   key = value  or  key='value'
 #
 #------------------------------ bulge disk factor ------------------------------
@@ -190,6 +190,10 @@ num_source_images=201
 # four header keys from them, and creates three text files.
 #-----------------------  source images for jedicatalog  -----------------------
 # For adding fake stars to HST.fits
-n_stars=200
-star_value=100
+# NOTE : On date Apr 5, 2018 Folowing DID NOT worked:
+# processCCD.py Errors:
+# No viable PSF candidates survive: (200,100) (100,200), (200,500),(200,10000)
+# Too many CR pixels:  (200,40000), (200,50000)
+n_stars=100
+star_value=20
 star_positions="physics_settings/star_positions.txt"
