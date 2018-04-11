@@ -1,4 +1,16 @@
 ##==============================================
+## Output files
+##==============================================
+jedisim_out/*
+jedisim_output/*
+simdatabase/scaled_bulge_f8/*
+simdatabase/scaled_disk_f8/*
+simdatabase/scaled_bulge_disk_f8/*
+
+
+
+
+##==============================================
 ## Compressed files
 ##==============================================
 *.7z
@@ -7,7 +19,6 @@
 *.jar
 *.rar
 *.tar
-
 
 
 
