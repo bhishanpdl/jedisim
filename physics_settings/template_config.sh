@@ -190,10 +190,13 @@ num_source_images=201
 # four header keys from them, and creates three text files.
 #-----------------------  source images for jedicatalog  -----------------------
 # For adding fake stars to HST.fits
-# NOTE : On date Apr 5, 2018 Folowing DID NOT worked:
-# processCCD.py Errors:
-# No viable PSF candidates survive: (200,100) (100,200), (200,500),(200,10000)
-# Too many CR pixels:  (200,40000), (200,50000)
+# We should choose number of stars and value of that single point star.
+# For example, When we run DMStack command processCCD.py on the final output of jedisim
+# if we take not appropriate values we may get these errors:
+# Error 1. No viable PSF candidates survive: (200,100) (100,200), (200,500),(200,10000), etc
+# Error 2. Too many CR pixels:  (200,40000), (200,50000), etc
+#
+# Good values are: n_stars=100 and star_value=20
 n_stars=100
 star_value=20
 star_positions="physics_settings/star_positions.txt"
