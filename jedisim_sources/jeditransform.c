@@ -1,92 +1,45 @@
 /* Author      : Ian Dell'antonio ; Professor, Brown University,et. al.
  * Author      : Bhishan Poudel; Physics Graduate Student, Ohio University
- * Date        : Jul 8, 2013
- * Last update : Sep 17, 2016
- *
  *
  * Compile     : gcc -O3 -o jeditransform jeditransform.c  -lm -lcfitsio
  * Run         :
- * ./jeditransform jedisim_out/out0/trial1_catalog.txt jedisim_out/out1/trial1_dislist.txt
+ * ./jeditransform jedisim_out/out0/trial1_catalog.txt jedisim_out/out0/trial1_dislist.txt
  *  executable     input_catalog_from_jedicatalog      output_dislist_for_jedidistort
  *
  *
  *
- * Depends     : 1. jedisim_out/bulge_disk_f8/bdf8_0.fits
- *               2. jedisim_out/out1/trial1_catalog.txt
- *               3. jedisim_out/out1/stamp_0/stamp_0_to12  # 13 empty output folders
  *
  * Inputs      : 1. jedisim_out/out1/trial1_catalog.txt
  *
  *
- * Outputs     : 1. 12,420 zipped stamps
- *                  e.g. jedisim_out/out1/stamp_0/stamp_0.fits.gz  (stamp_0 to stamp_12)
- *               2. jedisim_out/out1/trial1_dislist.txt
+ * Outputs     : 1. jedisim_out/out0/transformed_0/transformed_0.fits.gz etc
+ *               2. jedisim_out/out0/trial1_dislist.txt
  *
  * Info        :
- * This program takes in the catalog list created by jedicatalog:
- * (e.g. jedisim_out/out1/trial1_catalog.txt)
+ * This program reads the catalog created by jedicatalog:
+ * (e.g. jedisim_out/out0/trial1_catalog.txt)
  *
- * reads the galaxies names which are to be transformed
+ * from that catalog reads the galaxies names which are to be transformed
  * (e.g. simdatabase/bulge_f8/bulge_f8_0.fits
  *       simdatabase/disk_f8/disk_f8_0.fits)
  *
- * and also read other parameters needed to transform that galaxy
+ * and from that config file it also read other parameters needed to transform that galaxy
  * (e.g. x y angle redshift pixscale old_mag old_r50 new_mag new_r50 stamp1 stmap2)
  *
- * Note: example of a row of input catalog_list
+ * Then, it creates given number of zipped fitsfiles inside
+ * jedisim_out/out0/transfomred_0/stamp_0_to_999.fits.gz
  *
- * image    = jedisim_out/bulge_disk_f8/bdf8_0.fits
- * x        = 5571.742676
- * y        = 6911.588867
- * angle    = 254.850693
- * redshift = 1.500000
- * pixscale = 0.060000
- * old_mag  = 23.273899
- * old_r50  = 0.326880
- * new_mag  = 26.170000
- * new_r50  = 0.131700
- * stamp1   = jedisim_out/out1/stamp_0/stamp_0.fits.gz
- * stamp2   = jedisim_out/out1/distorted_0/distorted_0.fits
+ * If there are more than 1000 images it will write in stamp_1 folder.
  *
- *
- * Then, it creates 12420 zipped fitsfiles inside
- * jedisim_out/out0/stamp_0/stamp_0_to_999.fits.gz  (for stamps 0 to 12 )
- * It creates only one zipped output fitsfile, if there is only one galaxy in 
- * trail1_catalog.txt.
- *
- * It also creates dislist for the jedidistortion,viz.,
- * jedisim_out/out1/trial1_dislist.txt
+ * Along with transformed images, this program also creates 
+ * dislist for the jedidistortion: jedisim_out/out0/trial1_dislist.txt
  *
  * CAVEATS: 
- * a) If the name of output file is very it may fail:
+ * a) If the name of output file is very long it may fail:
  *    e.g. simdatabase/bulge_disk_f8/bulge_disk_f8_0.fits
  *          
  *    To overcome this make name of output file smaller.
  *    e.g. simdatabase/bulge_disk_f8/bdf8_0.fits
- * 
- * CHANGES: 
- * a) overwrite existing output files (Jun 01, 2017).
- *
- * BUG FIX:
- * a) Jan 15, 2018
- *    Jeditransform now works for null fitsfiles.
- *    Change tgalnaxes[0] and tgalnaxes[1] values POSITIVE only.
- *    Otherwise, it would give fitsio status = 213,naxis error.
- *
- * b) bug in long name
- *    Failed to open fitsfile error:
- *    It was looking for the file:
- *    simdatabase/scaled_bulge_disk_f8/f814w_scaled_bulge_disk108.fitsjedisim_out/out0
- *
- *    should be: simdatabase/scaled_bulge_disk_f8/f814w_scaled_bulge_disk108.fits
- *
- *    Solution:
- *    Add + 1 to the calloc in this line.
- *    galaxies[g].image  = (char *) calloc(strlen(buffer1)+1, sizeof(char));
- *
- *
- * RUNTIME : 2 min 30 sec
- *
  */
 
 

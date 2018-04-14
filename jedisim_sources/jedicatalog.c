@@ -1,82 +1,52 @@
-/* Author      : Ian Dell'antonio ; Professor, Brown University,et. al.
- * Author      : Bhishan Poudel; Physics PhD Student, Ohio University
- *
- * Date        : Jul 8, 2013
- * Last update : Sep 17, 2016
- *
+/* Author      : Dan Parker and Ian Dell'antonio ; Brown University 2013.
+ * Author      : Bhishan Poudel; Physics PhD Student, Ohio University 2014
  *
  * Compile     : gcc -Wall -O3 -o jedicatalog jedicatalog.c  -lm -lcfitsio
- * Run         : ./jedicatalog physics_settings/config0.conf
- *
- * Depends     : 1. physics_settings/config0.conf
- *               2. physics_settings/lens.txt
- *               3. physics_settings/psf.txt
- *               4. config_ouptput_folder     # e.g. jedisim_out/out0/
- *               5. simdatabase/radius_db     # r50 radius database
- *               6. simdatabase/red_db        # redshift database
- *               7. jedisim_out/color_out/color_out0/blue_red_0_to_100.fits
- *                  (created from jedicolor, refer config.conf)
- *                               num_source_images = 101
- *
- * Depends: physics_settings: config.conf, lens.txt, psf.txt,
- *          jedisim_out: out1
- *          simdatabase: radius_db, red_db
- *          jedisim_out/bulge_disk_f8/.fits
- * Creates: jedisim_out/out1: catalog.txt, convolvedlist.txt, distortedlist.txt
+ * Run         : ./jedicatalog physics_settings/config.sh
+ *               executable    config_file
  *
  *
- * Inputs      :  config.conf,lens.txt,psf.txt, config_ouptput_folder,
- *                radius_database, redshift_database, red_blue_fitsfiles
- *
- * Outputs     : 1. config_output_folder/catalog.txt       # out1/catalog.txt
- *               2. config_output_folder/convolvedlist.txt # out1/convolvedlist.txt, used by jedipaste
- *               3. config_output_folder/distortedlist.txt # out1/distortedlist.txt, used by jedipaste
- *
- *                   config_output_folder/catalog.txt,
- *                   config_output_folder/convolvedlist.txt
- *                   config_output_folder/distortedlist.txt
- *
- * Jedimaster  : color, jedicatalog, color, jeditransform, jedidistort, jedipaste,
- *                      jediconvolve, jedipaste, jedirescale
- *
- * Info        : This program takes in 201 galaxy fitsfile from input folder and
- *               reads some parameters from these fitsfiles.
- *               (simdatabse/bulge_disk_f8/f8_bulge_disk0_to_301.fits)
+ * Info        : This program takes in NUM_GALS galaxy fitsfile from input folder and
+ *               reads some parameters (radius, magnitude, mag0, pixscale) 
+ *               from these fitsfiles. 
+ *                 e.g. simdatabse/bulge_f8/bulge0.fits
  *
  *               It also reads other parameters from other input text files:
- *                   1. config.conf
- *                   2. lens.txt
- *                   3. psf.txt
- *                   5. simdatabase/radius_db/20_29.dat     # r50 radius database
- *                   6. simdatabase/red_db/19_99.dat        # redshift database
+ *                   1. physics_settings/config.sh
+ *                   2. physics_settings/lens.txt
+ *                   4. simdatabase/radius_db/20_29.dat     # r50 radius database
+ *                   5. simdatabase/red_db/19_99.dat        # redshift database
  *
  *               Then, in the end it creates three catalog list textfiles:
  *                   1. config_output_folder/catalog.txt
  *                   2. config_output_folder/convolvedlist.txt
  *                   3. config_output_folder/distortedlist.txt
+ *                      e.g. jedisim_out/out0/trial1_catalog.txt
  *
- *              And, these catalog list will be read by jedicolor and jeditransform programs.
+ *              And, these catalog list will be read by jeditransform program.
  *
+ * NOTE: Important part of this program:
+ * ======================================
  * Final galaxy writout:
  *  fprintf(fptr, "%s\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%f\t%s\t%s\n",gal->name, gal->x, gal->y, gal->angle, gal->redshift, gal->pixscale, gal->old_mag, gal->old_rad, gal->new_mag, gal->new_rad, gal->stamp_name, gal->dis_name);
  * 
- * * Note: example of a row of  catalog.txt
  *
- * image    = simdatabase/bulge_disk_f8/f8_bulge_disk271.fits
+ *
+ * NOTE: example of a row of  catalog.txt
+ * ======================================
+ *
+ * image    = simdatabase/bulge_f8/bulge_f8_0.fits # this is input fitsfile
  * x        = 5571.742676  center-x
  * y        = 6911.588867  center-y
  * angle    = 254.850693
- * redshift = 1.500000
- * pixscale = 0.030000
+ * redshift = 1.500000 # redshift of simulation (redshift of lens is different)
+ * pixscale = 0.060000 # it can be 0.03 or 0.06 etc, look at fitsheader
  * old_mag  = 23.273899
  * old_r50  = 0.326880
  * new_mag  = 26.170000
  * new_r50  = 0.131700
- * stamp1   = out1/stamp_0/stamp_0.fits.gz
- * stamp2   = out1/distorted_0/distorted_0.fits
- * 
- * 
- * 
+ * stamp1   = jedisim_out/out0/transformed_0/transformed_0.fits.gz
+ * stamp2   = jedisim_out/out0/distorted_0/distorted_0.fits
  * 
  */
 #include <stdio.h>

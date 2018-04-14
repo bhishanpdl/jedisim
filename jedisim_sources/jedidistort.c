@@ -1,66 +1,16 @@
-/* Author      : Ian Dell'antonio ; Professor, Brown University,et. al.
- * Author      : Bhishan Poudel; Physics Graduate Student, Ohio University
+/* Author      : Dan Parker and Ian Dell'antonio ; Brown University 2013.
+ * Author      : Bhishan Poudel; Physics Graduate Student, Ohio University 2014
  *
- * Date        : Jul 8, 2013
- * Last update : Aug 05, 2016
- * Last update : Sep 17, 2016
  *
  * Compile     : gcc -Wall -O3 -o jedidistort jedidistort.c  -lm -lcfitsio
- * Run         : ./jedidistort 12288 12288 trial1_dislist.txt lens.txt 0.03 0.3
- *                executable   nx    ny    dislist          lens  pix  redshift
+ * Run         : ./jedidistort 12288 12288 trial1_dislist.txt lens.txt 0.06 0.3
+ *                executable   nx    ny    dislist            lens    pix   lens_redshift
+ *                NOTE: Make sure pixscale is correct.
  *
  *
- *
- * Depends     : 1. jedisim_out/out1/trial0_dislist.txt
- *               2. physics_settings/lens.txt
- *               3. jedisim_out/out1/stamp_0_to_12/stamp_0_to_999.fits.gz
- *                  ( 12420 input zipped galaxies)
- *               4. jedisim_out/out1/distorted_0_to_12/
- *                  ( 13 empty folder to write unzipped distorted galaxies)
- *
- *
- * Output      : 1. jedisim_out/out1/distorted_0_to_12/
- *
- *
- * Jedimaster  : color, jedicatalog, color, jeditransform, jedidistort, jedipaste,
- *                      jediconvolve, jedipaste, jedirescale
- *
- * Usage       :  # lens the galaxies one at a time
-                  run_process("jedidistort", ['./executables/jedidistort',
-                    config['nx'],           config['ny'],
-                    config['dislist_file'], config['lenses_file'],
-                    config['pix_scale'],    config['lens_z']])
-
-
-    where,
-    nx=12288                    # number of pixels in the x direction
-    ny=12288                    # number of pixels in the y direction
-    dislist_file="dislist.txt"  # inside out1, created by jeditransform
-    lenses_file="physics_settings/lens.txt  # catalog of lenses to use
-    pix_scale=0.06              # pixel scale to use (arseconds per pixel)
-    lens_z=0.3                  # the redshift of the lenses
-
-
-
- * Usage       : ./executables/jedidistort 12288 12288
- *               jedisim_out/out1/trial1_dislist.txt
- *                physics_settings/lens.txt 0.03 0.3
- *
- *            executable   nx    ny    dislist     lens     pix  redshift
- *           ./jedidistort 12288 12288 dislist.txt lens.txt 0.06 0.6
-
- *  dislist looks like this: (dislist.txt is created by jeditransform)
- *  6813 888 10 23 1.500000 jedisim_out/out1/stamp_0/stamp_0.fits.gz
- *  jedisim_out/out1/distorted_0/distorted_0.fits
- *
- *
- * Info        : This program distorts the 12420 galaxies from
- *               jedisim_out/out1/stamp_0_to_stamp_12/fits.gz files
- *               according to dislist.txt and lens.txt
- *               and write distorted galaxies inside
- *               jedisim_out/out1/distorted_/
- *
- * Estimated time : 4 minutes for 12420 stamps.
+ * Info        : This program reads transformed galaxies and distorts them.
+ *                Example input : jedisim_out/out0/transformed_0/transformed_0.fits.gz
+ *                Example output: jedisim_out/out0/distorted_0/transformed_0.fits
  *
  */
 #include <stdio.h>
