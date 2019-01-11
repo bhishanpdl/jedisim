@@ -28,11 +28,54 @@ Here, I used the extension `.sh` for the config file just to make the syntax bea
 not a bash script, we can easily rename it to `config.txt` or anything else.
 
 # Usage
-The python script to run the jedisim is `jedisim.py`. We can run the jedisim using
-folowing command.
+First we need to create settings files, psfs and scaled galaxies using scripts a01 to a07.
+Then we can use the script `jedisim.py` to run other scripts a08-a11.
 ```
-python jedisim.py
-# jedisim.py outputs are inside ***jedisim_out*
+python a01_jedisim_config.py -z 1.5  
+# physics_settings: configb.sh, configd.sh, configm.sh, lens.txt
+
+python a02_interpolate_sed.py
+# sed/exp9_pf_interpolated_z1.5.csv
+
+python a03_scaled_bd_factors.py
+# physics_settings/bd_factors.txt
+
+python a04_scaled_gals.py
+# simdatabase/scaled_bulge,disk,bulge_disk f8.
+
+python a05_bd_weights_psf.py
+# physics_settings/bd_weights_z1.5.txt
+
+python a06_scaled_bd_flux_rat.py
+# physics_settings/bd_flux_rat_z1.5.txt
+
+NOTE: Before running a07 script, we need to combine PSF Files
+cd psf 
+python split_psf_files.py
+rm psf**
+mv orig_psf/* .
+rm -r orig_psf
+rm psfb.fits psfd.fits psfm.fits
+cd ../
+python a07_psf_bdmono.py 
+# psf: psfb,psfd,psfm .fits
+
+### Now we can run jedimaster.
+python jedimaster.py
+# Runs: a08, a09, a10 and a11 scripts.
+
+python a08_jedisim_odirs.py
+# jedisim_out/out0, and out90
+## scaled_bulge, scaled_disk scaled_bulge_disk
+
+python a09_jedisim_3cats.py
+# jedisim_out/out0,90/trial1_: catalog, convolvedlist, distortgedlist.txt
+
+python a10_jedisimulate.py
+# Runs: lsst_TDCR  Transform, Distort, Convolve, Rescale.
+
+python a11_jedisimulate90.py
+# Runs: lsst_TDCR  for 90 degree rotated images.
 ```
 
 To run the simulation multiple time there is a runner script `run_jedisim.py`.
