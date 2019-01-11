@@ -1,34 +1,31 @@
+Table of contents
+==================
+- [Introduction and implementation](#introduction-and-implementation)
+- [Configuration](#configuration)
+- [Usage](#usage)
+- [Output](#output)
+- [Others](#others)
+- [After the jedisim](#after-the-jedisim)
+- [Schematic Diagram](#schematic-diagram)
+- [Summary Images](#summary-images)
+- [Copyright](#copyright)
+
 ![](ohio.png) 
 
-# Introduction
+# Introduction and implementation
 Jedisim is a program to generate the realistic galaxy cluster simulations from the real
 galaxy observation observations.
 
-> **Copyright**: The original source code was developed by *Daniel Parker* 
-  and *Ian Dell'Antonio* of Brown University in around 2013.
-  I forked the project in 2014 and customized the project for the color dependent analysis.
-  I am maintaining this repo from 2014 (though I uploaded it very late) and is being changed constantly.
-  There is also another repo with more generalized version maintained by [Binyang Liu of Brown University](https://github.com/rbliu/jedisim).<br>
-
------------
-
-## 1. Introduction and implementation
-
-* Please refer to the documentations:
-
-    * jedisim/documentation/jedisim/jedisim.pdf
-
-    * jedisim/documentation/lensing/lensing.pdf
+More information can be found on:
+ - jedisim/documentation/jedisim/jedisim.pdf
+ -jedisim/documentation/lensing/lensing.pdf
+ - jedisim/documentation/Readme.md
     
-    * jedisim/documentation/Readme.md
-    
-## 2. Configuration
-
+# Configuration
 The settings file for jedisim is `physics_settings/template_config.sh`.
 We can change all physics parameter used in jedisim simulation here.
 
-## 3. Usage
-
+# Usage
 The python script to run the jedisim is `jedisim.py`. We can run the jedisim using
 folowing command.
 ```
@@ -53,7 +50,7 @@ Dependencies:
 # Note: The code is mainly written in python3, however, it is compatible with python2.
 ```
 
-## 4. Output
+# Output
 
 * Specify the directory of output images in configuration file `physics_settings/template_config.sh`.
 
@@ -65,7 +62,7 @@ Dependencies:
   which will create outputs inside `jedisim_out/FolderNameWithDate/REDSHIFT/lsst, lsst90, etc`.
 
 
-## 5. Others
+# Others
 
 * The original images of HST ACS WFC are splitted into bulge and disk compontents using `galfit`.
 
@@ -84,13 +81,13 @@ Dependencies:
 * The source codes are in "jedisim_sources/". These are the C programs, 
   which needs to be compiled if we do any changes to these files.
 
-## After the jedisim
+# After the jedisim
 
 * The jedisim outputs, e.g. `jedisim_out/jout_z0.7_2018_04_20_08/z0.7/lsst/lsst_z0.7_0.fits`
   are used in DMStack Mass estimation pipeline to estimate the mass of the 
   background dark matter cluster.
   
-## Schematic Diagram
+# Schematic Diagram
 ![](images/Jedisim_Diagram.png)
 
 Notes:
@@ -110,7 +107,7 @@ Notes:
 
 > We use the DMStack Pipepline `Clusters` to get the mass estimates of galaxy clusters.
 
-## Summary Images
+# Summary Images
 ![](images/galaxy_fitting.png)
 ![](images/rescaling_bulge_disk.png)
 ![](images/psf_from_phosim.png)
@@ -118,3 +115,8 @@ Notes:
 ![](images/transform_and_distort.png)
 ![](images/hst_convolve.png)
 ![](images/chro_mono.png)
+
+# Copyright
+The C-programs and basic skeleton was  was developed by *Daniel Parker*  and *Ian Dell'Antonio* 
+of Brown University in around 2013. I forked the project in 2014 and customized the project for the color dependent analysis. I am maintaining this repo from 2014 (though I uploaded it very late) and is being changed constantly.
+There is also another repo with more generalized version maintained by [Binyang Liu of Brown University](https://github.com/rbliu/jedisim).<br>
