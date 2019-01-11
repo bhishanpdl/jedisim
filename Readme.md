@@ -89,3 +89,32 @@ Dependencies:
 * The jedisim outputs, e.g. `jedisim_out/jout_z0.7_2018_04_20_08/z0.7/lsst/lsst_z0.7_0.fits`
   are used in DMStack Mass estimation pipeline to estimate the mass of the 
   background dark matter cluster.
+  
+## Schematic Diagram
+![](images/Jedisim_Diagram)
+
+Notes:
+> We have 200 galaxies from HST UDF Survey, we create 20,000 images from them using similar radius, magnitude, angle, and so on. Then, we put a lens in between observer and the images background. The lens could be galaxy cluster,  a neutron star, a black hole or any massive object.
+
+> For a single galaxy, we break it into bulge and disk using galfit. Every galaxies have galactic disk, but it may not have bulge. The spiral galaxies generally have both bulge and disk, however, disk galaxies may not have the bulge at the center of the galaxy. In this simulation, if there is no bulge part, we keep it blank image of the same dimension as that of the disk image.
+
+> After we break a single galaxy to bulge and disk part, we keep the total brightness of bulge+disk same for both HST and LSST, however, the ratio of bulge_to_disk is different for HST and LSST,due to the star formation history in the galaxy.
+
+> When we look at the redshift of galaxies, we take the redshift of the HST galaxies to be $z = 0.2$, and we do our simulation for LSST at user given redshifts (e.g. z = 0.7, 1.0, 1.5 etc).
+
+> In this project we are mainly studying the effect of choice of PSF and its effect on the shear measurement of background galaxies. We study both wavelength dependent (i.e. chromatic) and independent ( i.e. monochromatic) effects.
+
+> The final outputs of jedisim are `lsst.fits` and `lsst_mono.fits`.
+
+> We use the DMStack Pipeline `obs_file` to get the shear estimates of output galaxies clusters.
+
+> We use the DMStack Pipepline `Clusters` to get the mass estimates of galaxy clusters.
+
+## Summary Images
+![](galaxy_fitting.png)
+![](rescaling_bulge_disk.png)
+![](psf_from_phosim.png)
+![](jeditransform.png)
+![](transform_and_distort.png)
+![](hst_convolve.png)
+![](chro_mono.png)
