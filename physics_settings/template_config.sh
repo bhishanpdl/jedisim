@@ -199,4 +199,4 @@ num_source_images=201
 # Good values are: n_stars=100 and star_value=20
 n_stars=100
 star_value=20
-star_positions="physics_settings/star_positions.txt"
+star_positions="physics_settings/star_positions.csv"
