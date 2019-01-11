@@ -24,12 +24,11 @@ More information can be found on:
 # Configuration
 The settings file for jedisim is `physics_settings/template_config.sh`.
 We can change all physics parameter used in jedisim simulation here.
-Here, I used the extension `.sh` for the config file just to make the syntax beautiful, this is 
-not a bash script, we can easily rename it to `config.txt` or anything else.
+Note that, the extension `.sh` for the config file is just to make the syntax beautiful when we open the file in a text editor, it is not a bash script, which can easily renamed be to `config.txt` or anything else.
 
 # Usage
-First we need to create settings files, psfs and scaled galaxies using scripts a01 to a07.
-Then we can use the script `jedisim.py` to run other scripts a08-a11.
+First we need to create settings files, psfs and scaled galaxies using scripts `a01` to `a07`.
+Then we can use the script `jedisim.py` to run other scripts `a08-a11`.
 ```
 python a01_jedisim_config.py -z 1.5  
 # physics_settings: configb.sh, configd.sh, configm.sh, lens.txt
@@ -52,7 +51,7 @@ python a06_scaled_bd_flux_rat.py
 NOTE: Before running a07 script, we need to combine PSF Files
 cd psf 
 python split_psf_files.py
-rm psf**
+rm psf*
 mv orig_psf/* .
 rm -r orig_psf
 rm psfb.fits psfd.fits psfm.fits
@@ -85,31 +84,29 @@ python run_jedisim.py -z 0.7 -c pisces -s 0 -e 0
 # -c is computer name which is running the code
 # -s is starting number
 # -e is ending number, it is inclusive, -s 0 -e 0 gives only one output.
-# run_jedisim.py outputs are inside ***jedisim_outputs*
+# run_jedisim.py outputs are written inside **jedisim_outputs**
 ```
 
 Dependencies:
 ```
-# 1. astropy ( to install this run  pip install astropy )
-# 2. util   ( This is my local utitily scripts file util.py )
-# Note: The code is mainly written in python3, however, it is compatible with python2.
+# 1. astropy (pip install astropy )
+# 2. util (This is my utility script.)
 ```
 
-# Output
+# Outputs
 
-* Specify the directory of output images in configuration file `physics_settings/template_config.sh`.
+* Output images directory can be changed in the configuration file `physics_settings/template_config.sh`.
 
-* For a single run, the outputs of `jedisim.py` are created inside `jedisim_out/out0` 
-  and `jedisim_out/out90` directories. Here we have unrotated and 90 degree rotated simulations
-  inside out0 and out90, respectively.
+* For a single run, the outputs of `jedisim.py` are written inside `jedisim_out/out0` 
+  and `jedisim_out/out90` directories.
 
 * For multiple run of the same script `jedisim.py`,  there is a dedicated script `run_jedisim.py`
   which will create outputs inside `jedisim_out/FolderNameWithDate/REDSHIFT/lsst, lsst90, etc`.
 
 
-# Others
+# Mixed Info
 
-* The original images of HST ACS WFC are splitted into bulge and disk compontents using `galfit`.
+* The original images of HST ACS WFC are splitted into bulge and disk components using `galfit`.
 
 * The input images for jedisim are `sidmdatabase/bulge_f8` and `sidmdatabase/disk_f8`.
   Here, f8 is the `F814w` filter images I am using for the simulation. We can do it for `F606w`
@@ -148,9 +145,9 @@ Notes:
 
 > The final outputs of jedisim are `lsst.fits` and `lsst_mono.fits`.
 
-> We use the DMStack Pipeline `obs_file` to get the shear estimates of output galaxies clusters.
+> We use the DMStack Pipeline `obs_file` to get the shear estimates of the output galaxies clusters.
 
-> We use the DMStack Pipepline `Clusters` to get the mass estimates of galaxy clusters.
+> We use the DMStack Pipepline `Clusters` to get the mass estimates of the galaxy clusters.
 
 # Summary Images
 ![](images/galaxy_fitting.png)
