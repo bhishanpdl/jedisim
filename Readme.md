@@ -60,8 +60,8 @@ cd ../
 python a07_psf_bdmono.py 
 # psf: psfb,psfd,psfm .fits
 
-### Now we can run jedimaster.
-python jedimaster.py
+### Now we can run jedisim.
+python jedisim.py
 # Runs: a08, a09, a10 and a11 scripts.
 
 python a08_jedisim_odirs.py
