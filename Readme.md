@@ -91,7 +91,7 @@ Dependencies:
   background dark matter cluster.
   
 ## Schematic Diagram
-![](images/Jedisim_Diagram)
+![](images/Jedisim_Diagram.png)
 
 Notes:
 > We have 200 galaxies from HST UDF Survey, we create 20,000 images from them using similar radius, magnitude, angle, and so on. Then, we put a lens in between observer and the images background. The lens could be galaxy cluster,  a neutron star, a black hole or any massive object.
@@ -111,10 +111,10 @@ Notes:
 > We use the DMStack Pipepline `Clusters` to get the mass estimates of galaxy clusters.
 
 ## Summary Images
-![](galaxy_fitting.png)
-![](rescaling_bulge_disk.png)
-![](psf_from_phosim.png)
-![](jeditransform.png)
-![](transform_and_distort.png)
-![](hst_convolve.png)
-![](chro_mono.png)
+![](images/galaxy_fitting.png)
+![](images/rescaling_bulge_disk.png)
+![](images/psf_from_phosim.png)
+![](images/jeditransform.png)
+![](images/transform_and_distort.png)
+![](images/hst_convolve.png)
+![](images/chro_mono.png)
