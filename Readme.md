@@ -18,12 +18,14 @@ galaxy observation observations.
 
 More information can be found on:
  - jedisim/documentation/jedisim/jedisim.pdf
- -jedisim/documentation/lensing/lensing.pdf
+ - jedisim/documentation/lensing/lensing.pdf
  - jedisim/documentation/Readme.md
     
 # Configuration
 The settings file for jedisim is `physics_settings/template_config.sh`.
 We can change all physics parameter used in jedisim simulation here.
+Here, I used the extension `.sh` for the config file just to make the syntax beautiful, this is 
+not a bash script, we can easily rename it to `config.txt` or anything else.
 
 # Usage
 The python script to run the jedisim is `jedisim.py`. We can run the jedisim using
