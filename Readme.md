@@ -144,7 +144,7 @@ Notes:
 > In this project we are mainly studying the effect of choice of PSF and its effect on the shear measurement of background galaxies. We study both wavelength dependent (i.e. chromatic) and independent ( i.e. monochromatic) effects.
 
 > The final outputs of jedisim are `lsst.fits` and `lsst_mono.fits`. We also get the 90 degree rotated versions of these outputs
-so as to reduce the intrinsic shape bias of the background galaxy sample, while keeping all other parameters unchanged. This means
+(keeping all other parameters unchanged) so as to reduce the intrinsic shape bias of the background galaxy sample. This means
 when we run jedisim, from our initial 200 F814W galaxies, we had created bulge and disk parts of these galaxies, then created 20,000
 samples of galaxies using similar parameters and in the end we get only one chromatic galaxy cluster, one monochromatic galaxy cluster and 90-degree rotated versions of them.
 
