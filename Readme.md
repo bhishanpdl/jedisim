@@ -24,11 +24,31 @@ More information can be found on:
 # Configuration
 The settings file for jedisim is `physics_settings/template_config.sh`.
 We can change all physics parameter used in jedisim simulation here.
-Note that, the extension `.sh` for the config file is just to make the syntax beautiful when we open the file in a text editor, it is not a bash script, which can easily renamed be to `config.txt` or anything else.
+Note that the extension `.sh` for the config file is for aestehtic purpose when we open the file in a text editor
+which will give nice syntax hightlight, this is not a bash script and can easily renamed be to `config.txt`
+or anything else without any change in operation of the whole program.
 
 # Usage
-First we need to create settings files, psfs and scaled galaxies using scripts `a01` to `a07`.
-Then we can use the script `jedisim.py` to run other scripts `a08-a11`.
+The jedisim program consists of multiple modules and there is a runner program which helps run the all the
+related modules in an easy fashion:
+```
+# Run the jedisim program on the computer named pisces for redshift 0.7 for only one (start 0 to end 0)
+python run_jedisim.py -z 0.7 -c pisces -s 0 -e 0
+
+# NOTE:
+# -z 0.7 is the redshift 0.7
+# -c pisces is the name of the computer running the code ( I am using more than one computers to run simulations.)
+# -s 0 is starting number of the simulation is 0.
+# -e 0 is ending number of the simulation is 0. -s 0 -e 0 gives only one output file.
+# 
+# OUTPUTS:
+# The final outputs are written inside **jedisim_outputs**
+```
+
+Details of modular programs:  
+There are 11 sub programs inside the jedisim program. First seven sub programs `a01` to `a07`
+create settings files, psfs and scaled galaxies required as the initial input for the jedisim program .
+Then, we can use the script `jedisim.py` to run other scripts `a08-a11`.
 ```
 python a01_jedisim_config.py -z 1.5  
 # physics_settings: configb.sh, configd.sh, configm.sh, lens.txt
@@ -77,15 +97,7 @@ python a11_jedisimulate90.py
 # Runs: lsst_TDCR  for 90 degree rotated images.
 ```
 
-To run the simulation multiple time there is a runner script `run_jedisim.py`.
-```
-python run_jedisim.py -z 0.7 -c pisces -s 0 -e 0
-# Here, I am using redshift z as 0.7
-# -c is computer name which is running the code
-# -s is starting number
-# -e is ending number, it is inclusive, -s 0 -e 0 gives only one output.
-# run_jedisim.py outputs are written inside **jedisim_outputs**
-```
+
 
 Dependencies:
 ```
@@ -223,5 +235,7 @@ After we get these bulge and disk factors we simply multiply them by the `bulge.
 
 # Copyright
 The C-programs and basic skeleton was  was developed by *Daniel Parker*  and *Ian Dell'Antonio* 
-of Brown University in around 2013. I forked the project in 2014 and customized the project for the color dependent analysis. I am maintaining this repo from 2014 (though I uploaded it very late) and is being changed constantly.
-There is also another repo with more generalized version maintained by [Binyang Liu of Brown University](https://github.com/rbliu/jedisim).<br>
+of Brown University circa 2013. I forked the project in 2014 and customized the project for the color dependent analysis.
+I am maintaining this repo from 2014 (though I uploaded it very late) and is being changed constantly.
+The original version jedisim is now being maintained by Robert Binyang Liu et. al. in another
+[github repo](https://github.com/rbliu/jedisim).
