@@ -145,20 +145,33 @@ Dependencies:
 ![](images/Jedisim_Diagram.png)
 
 Notes:
-> We have 200 galaxies from HST UDF Survey, we create 20,000 images from them using similar radius, magnitude, angle, and so on. Then, we put a lens in between observer and the images background. The lens could be galaxy cluster,  a neutron star, a black hole or any massive object as long as it distorts the background galaxy when an observer observes that galaxy.
+> From Brown University Prof. Dr. Ian Del'Antonio we have obtained 200 clean galaxy images (one galaxy in one fitsfile) from
+  HST ACS WFC F814W filter. Only the galaxies with no near neighbors were selected and background were subtracted using iraf.
+  Each image is 601*601 dimension and has pixscale 0.06 and mag0 of 26.78. For example one file `sect23_f814w_gal0.fits` has
+  `radius=14.5`, `flux=398.14`, `mag=20.28`.
 
-> For a single galaxy, we break it into a bulge and a disk using the sodftare **galfit**. Every galaxies have galactic disk, but it may not have bulge. The spiral galaxies generally have both bulge and disk, however, disk galaxies may not have the bulge at the center of the galaxy. In this simulation, if there is no bulge part, we keep it zero pixeled image of the same dimension as that of the disk image.
+> For a single galaxy (`sect23_f814w_gal0.fits`), we break it into a bulge and a disk using the software **galfit**. Every galaxies have galactic disk, but it may not have bulge. The spiral galaxies generally have both bulge and disk, however, disk galaxies may not have the bulge at the center of the galaxy. In this simulation, if there is no bulge part, we keep it zero pixeled image of the same dimension as that of the disk image. For a single galaxy image it gives two outputs: `f814w_bulge0.fits` and `f814w_disk0.fits`.
 
-> After we break a single galaxy to bulge and disk part, we keep the total brightness of bulge+disk same for both HST and LSST, however, the ratio of bulge_to_disk is different for HST and LSST, due to the star formation history in the galaxy.
+> Here the galaxy image of HST pixscale `sect23_f814w_gal0.fits` is broken into bulge and disk parts as `f814w_bulge0.fits` and `f814w_disk0.fits`. But, we want to simulate the image for LSST and LSST has different pixscale. We keep total flux of bulge+disk before
+and after pixscale change. 
+```
+(flux_bulge + flux_disk) for HST = (flux_bulge + flux_disk) for LSST
+```
+We use the script `a04_scaled_gals.py` and get `f814w_scaled_bulge0.fits` and `f814w_scaled_disk0.fits`
 
-> When we look at the redshift of galaxies, we take the redshift of the HST galaxies to be $z = 0.2$, and we do our simulation for LSST at user given redshifts (e.g. z = 0.7, 1.0, 1.5 etc).
 
-> In this project we are mainly studying the effect of choice of PSF and its effect on the shear measurement of background galaxies. We study both wavelength dependent (i.e. chromatic) and independent ( i.e. monochromatic) effects.
+
+> We choose the redshift of the HST galaxies to be $z = 0.2$, and we for simulation for LSST we use $z = 1.5$. We can also use
+  other redshifts for LSST simulations such as 0.5, 0.7, 1.0 and 1.5.
+
+
+> In this project we are mainly studying the effect of choice of PSF and its effect on the shear measurement of background galaxies.
+ We study both wavelength dependent (i.e. chromatic) and independent ( i.e. monochromatic) effects. So, we have 3 different PSF files
+ (`psfb.fits`,`psfd.fits`,`psfm.fits`) to be convolved with input galaxy cluster images.
+
 
 > The final outputs of jedisim are `lsst.fits` and `lsst_mono.fits`. We also get the 90 degree rotated versions of these outputs
-(keeping all other parameters unchanged) so as to reduce the intrinsic shape bias of the background galaxy sample. This means
-when we run jedisim, from our initial 200 F814W galaxies, we had created bulge and disk parts of these galaxies, then created 20,000
-samples of galaxies using similar parameters and in the end we get only one chromatic galaxy cluster, one monochromatic galaxy cluster and 90-degree rotated versions of them.
+(keeping all other parameters unchanged) so as to reduce the intrinsic shape bias of the background galaxy sample.
 
 > We use the DMStack Pipeline `obs_file` to get the shear estimates of the output galaxies clusters.
 
