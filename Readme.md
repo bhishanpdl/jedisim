@@ -180,29 +180,22 @@ We use the script `a04_scaled_gals.py` and get `f814w_scaled_bulge0.fits` and `f
 # PSF Creation for Bulge, Disk, and Monochromatic Images
 From the PHOSIM Software we have created 21 narrowband PSFs. Now we will use them to create PSF for scaled bulge, disk, and monochromatic images. The scaled psf files are given by formula:
 
-$$
-p_b = \frac{b0 * p0 + b1 * p1 + ... + b20 * p20}{b0 + b1 + ... + b20}
-$$
+![](images/psf_bdm.png)
 
-$$
-p_d = \frac{d0 * p0 + d1 * p1 + ... + d20 * p20}{d0 + d1 + ... + d20}
-$$
+- $p_b$, $p_d$,and $p_m$ are psf for bulge, disk, and monochromatic respectively.
+- $b0, b1, ..., b20$ are bulge weights for 21 narrowbands. 
+- $d0, d1, ..., d20$ are  disk weights for 21 narrowbands. 
+- The PSF files p0 to p20 are created using Phosim.
+- The bulge and disk weights are obtained from `physics_settings/bd_weights_z1.5.txt` which is created from `a05_bd_weights_psf.py`.
+- `b0 ... b20 ` are the integrated flux in the given narrowbands. 
+- The LSST R-band filter blue and red wavelengths range is `5520 Angstrom` to `6910 Angstrom` (https://www.lsst.org/about/camera/features).
+- We divide these wavelengths by a factor ($1 + z$) to get the range 2208 to 2764 for the redshift of 1.5.
+- We divide this range 2208 to 2764 into 21 parts and get 21 narrowband ranges.
+- For bulge we use `sed/ssp_pf.cat` and for disk we use `sed/exp9_pf.cat` lc catalog files.
+- These SED files do not have the step size of 1 Angstrom, so we interpolate the sed and create new sed files.
+- After creating new SED files, we integrate the flux in given narrowband to get the quantities `b0 b1 ... b20 etc`.
 
-$$
-p_m = f_{rd} \ p_d + f_{rb} \ p_b
-$$
-
-
-Here, $p_b$, $p_d$,and $p_m$ are psf for bulge, disk, and monochromatic respectively. Also the quantities $b0, b1, ..., b20$ and $d0, d1, ..., d20$ are bulge and disk weights for 21 narrowbands. 
-
-These quantities are the integrated flux in the given narrowbands. 
-For example, we have R band filter blue and red wavelength range 2208 to 2764 Angstrom. 
-We divide this range into 21 parts and integrate the flux in that range to get the bulge and disk factor for 
-that range using SED file for bulge and disk.
-
-The LSST R-band filter blue and red wavelengths range is `5520 Angstrom` to `6910 Angstrom` (https://www.lsst.org/about/camera/features).
-
-We divide these wavelengths by a factor ($1 + z$) to get the range 2208 to 2764 for the redshift of 1.5.
+```
 
 
 # Creation of Scaled Bulge, Disk, and Monochromatic Images
