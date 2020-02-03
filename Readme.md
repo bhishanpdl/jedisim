@@ -233,7 +233,7 @@ After dividing by $ 1 + z_{cutout} = 1 + 0.2$ we get $\lambda_{hst0} = 5897.9 $ 
 
 Then, we get bulge factor and disk factor using the formula:
 
-![](images/bf_bd.png)
+![](images/bf_df.png)
  
  where, `F_b` is the flux of a bulge file (e.g. `simdatabase/bulge_f8/f814w_bulge0.fits`) and `F_d` is the flux of a disk file (e.g. `simdatabase/disk_f8/f814w_disk0.fits`). Flux is simply the total sum of pixels of given fitsfile. Here, for 201 bulge files we have 201 different `F_b` and for 201 disk files we get 201 different `F_d`.
 
