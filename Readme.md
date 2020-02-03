@@ -1,18 +1,25 @@
-Table of contents
-==================
-- [Introduction and implementation](#introduction-and-implementation)
-- [Configuration](#configuration)
-- [Usage](#usage)
-- [Outputs](#outputs)
-- [Mixed Info](#mixed-info)
-- [After the jedisim](#after-the-jedisim)
-- [Schematic Diagram](#schematic-diagram)
-- [Summary Images](#summary-images)
-- [Copyright](#copyright)
+Table of Contents
+=================
+   * [Jedisim Introduction](#jedisim-introduction)
+      * [Introduction](#introduction)
+      * [Configuration Settings](#configuration-settings)
+      * [Usage](#usage)
+      * [Outputs](#outputs)
+      * [Some Info](#some-info)
+      * [After the jedisim](#after-the-jedisim)
+      * [Schematic Diagram](#schematic-diagram)
+   * [Implementation of Jedisim](#implementation-of-jedisim)
+      * [Step1: Create PSF for bulge disk and mono](#step1-create-psf-for-bulge-disk-and-mono)
+      * [Step2: Create Scaled Fitsfiles for bulge, disk and mono](#step2-create-scaled-fitsfiles-for-bulge-disk-and-mono)
+      * [Step3: Run jedisim](#step3-run-jedisim)
+   * [Technical Notes](#technical-notes)
+      * [Copyright](#copyright)
+
 
 ![](ohio.png) 
 
-# Introduction and implementation
+# Jedisim Introduction
+## Introduction
 Jedisim is a program to generate the realistic galaxy cluster simulations from the real
 galaxy observation observations.
 
@@ -21,14 +28,14 @@ More information can be found on:
  - jedisim/documentation/lensing/lensing.pdf
  - jedisim/documentation/Readme.md
     
-# Configuration
+## Configuration Settings
 The settings file for jedisim is `physics_settings/template_config.sh`.
 We can change all physics parameter used in jedisim simulation here.
 Note that the extension `.sh` for the config file is for aestehtic purpose when we open the file in a text editor
 which will give nice syntax hightlight, this is not a bash script and can easily renamed be to `config.txt`
 or anything else without any change in operation of the whole program.
 
-# Usage
+## Usage
 The jedisim program consists of multiple modules and there is a runner program which helps run the all the
 related modules in an easy fashion:
 ```
@@ -105,7 +112,7 @@ Dependencies:
 # 2. util (This is my utility script.)
 ```
 
-# Outputs
+## Outputs
 
 * Output images directory can be changed in the configuration file `physics_settings/template_config.sh`.
 
@@ -116,7 +123,7 @@ Dependencies:
   which will create outputs inside `jedisim_out/FolderNameWithDate/REDSHIFT/lsst, lsst90, etc`.
 
 
-# Mixed Info
+## Some Info
 
 * The original images of HST ACS WFC are splitted into bulge and disk components using `galfit`.
 
@@ -135,13 +142,13 @@ Dependencies:
 * The source codes are in "jedisim_sources/". These are the C programs, 
   which needs to be compiled if we do any changes to these files.
 
-# After the jedisim
+## After the jedisim
 
 * The jedisim outputs, e.g. `jedisim_out/jout_z0.7_2018_04_20_08/z0.7/lsst/lsst_z0.7_0.fits`
   are used in DMStack Mass estimation pipeline to estimate the mass of the 
   background dark matter cluster.
   
-# Schematic Diagram
+## Schematic Diagram
 ![](images/Jedisim_Diagram.png)
 
 Notes:
@@ -177,7 +184,8 @@ We use the script `a04_scaled_gals.py` and get `f814w_scaled_bulge0.fits` and `f
 
 > We use the DMStack Pipepline `Clusters` to get the mass estimates of the galaxy clusters.
 
-# Step1: Create PSF for bulge disk and mono
+# Implementation of Jedisim
+## Step1: Create PSF for bulge disk and mono
 From the PHOSIM Software we have created 21 narrowband PSFs. Now we will use them to create PSF for scaled bulge, disk, and monochromatic images. The scaled psf files are given by formula:
 
 ![](images/psf_bdm.png)
@@ -195,7 +203,7 @@ From the PHOSIM Software we have created 21 narrowband PSFs. Now we will use the
 - These SED files do not have the step size of 1 Angstrom, so we interpolate the sed and create new sed files.
 - After creating new SED files, we integrate the flux in given narrowband to get the quantities `b0 b1 ... b20 etc`.
 
-# Step2: Create Scaled Fitsfiles for bulge, disk and mono
+## Step2: Create Scaled Fitsfiles for bulge, disk and mono
 We have total 201 number of HST images, so we have 201 bulge images and 201 disk images.
 From these two folders we create so called `scaled_bulge`, `scaled_disk`, and `scaled_bulge_disk` folders. 
 For this, we first find the `bulge_factor` (bf) and `disk_factor` (df) then we create scaled galaxies.
@@ -219,7 +227,7 @@ Then, we get bulge factor and disk factor using the formula:
 After we get these bulge and disk factors we simply multiply them by the `bulge.fits` and `disk.fits` to get `scaled_bulge.fits` and `scaled_disk.fits`.
 
 
-# Step3: Run jedisim
+## Step3: Run jedisim
 ![](images/galaxy_fitting.png)
 ![](images/rescaling_bulge_disk.png)
 ![](images/psf_from_phosim.png)
@@ -228,7 +236,8 @@ After we get these bulge and disk factors we simply multiply them by the `bulge.
 ![](images/hst_convolve.png)
 ![](images/chro_mono.png)
 
-# Copyright
+# Technical Notes
+## Copyright
 The C-programs and basic skeleton was  was developed by *Daniel Parker*  and *Ian Dell'Antonio* 
 of Brown University circa 2013. I forked the project in 2014 and customized the project for the color dependent analysis.
 I am maintaining this repo from 2014 (though I uploaded it very late) and is being changed constantly.
