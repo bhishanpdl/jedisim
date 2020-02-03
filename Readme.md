@@ -216,7 +216,8 @@ flux column for cutout galaxy. Here, we have used the galaxy cutout redshift as 
 The wavelengths $\lambda_0$ and $\lambda_{20}$ are the LSST R-band filter blue and red wavelengths. This range is `5520 Angstrom` to `6910 Angstrom` [Refer here](https://www.lsst.org/about/camera/features)).
 We divide these wavelengths by a factor ($1 + z$) to get the range 2208 to 2764 for the redshift of 1.5.
 
-Similarly, for the HST the wavelengths are $\lambda_{hst0} = 7077.5 $ Angstrom and $\lambda_{hst20} = 9588.5 $ Angstrom after dividing by $ 1 + z = 1.2$ we get $\lambda_{hst0} = 5897.9 $ Angstrom and $\lambda_{hst0} = 7990.4 $ Angstrom. We can get more details about HST ACS/WFC filter at the [website](http://www.stsci.edu/hst/acs/documents/handbooks/current/c05_imaging2.html).
+Similarly, for the HST the wavelengths are $\lambda_{hst0} = 7077.5 $ Angstrom and $\lambda_{hst20} = 9588.5 $ Angstrom.
+After dividing by $ 1 + z = 1.2$ we get $\lambda_{hst0} = 5897.9 $ Angstrom and $\lambda_{hst0} = 7990.4 $ Angstrom. We can get more details about HST ACS/WFC filter at the [website](http://www.stsci.edu/hst/acs/documents/handbooks/current/c05_imaging2.html).
 
 Then, we get bulge factor and disk factor using the formula:
 
