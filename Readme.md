@@ -209,6 +209,18 @@ From these two folders we create so called `scaled_bulge`, `scaled_disk`, and `s
 For this, we first find the `bulge_factor` (bf) and `disk_factor` (df) then we create scaled galaxies.
 
 ![](images/fratb_fratd.png)
+
+Here, we have 201 bulge and disk files. So we need 201 values of `bf` and `df`. These values are in `physics_settings/bd_factors.txt` which is created by `a03_scaled_bd_factors.py`.
+
+Here, `f_ratb` and `f_ratd` are just two scaler numbers which depend on the redshift of the galaxy.
+For example, for redshift of `z=1.5` we have create following text file `physics_settings/bd_flux_z1.5.txt` with contents:
+```bash
+# fr = (sum_Fsb/sum_Fsd) / NUM_GALS  where Fsb is sum of pixels of 201 scaled bulge galaxies.
+# frb = fr / (1+fr)
+# frd = 1  / (1 + fr)
+# frb                frd   
+0.0002556124875390253    0.999744387512461
+```
  
 Here, $f_{bz}$ is the flux column from the SED file according the redshift $z$ for the bulge and $f_{bzcut}$ is the 
 flux column for cutout galaxy. Here, we have used the galaxy cutout redshift as $ z_{cutout} = 0.2$. Similarly we have the flux columns for disk galaxies.
@@ -223,7 +235,7 @@ Then, we get bulge factor and disk factor using the formula:
 
 ![](images/bf_bd.png)
  
- where, `F_b` is the flux of a bulge file (e.g. `simdatabase/bulge_f8/f814w_bulge0.fits`) and `F_d` is the flux of a disk file (e.g. `simdatabase/disk_f8/f814w_disk0.fits`) for 201 bulge and disk files we have 201 bulge and disk factors.
+ where, `F_b` is the flux of a bulge file (e.g. `simdatabase/bulge_f8/f814w_bulge0.fits`) and `F_d` is the flux of a disk file (e.g. `simdatabase/disk_f8/f814w_disk0.fits`). Flux is simply the total sum of pixels of given fitsfile. Here, for 201 bulge files we have 201 different `F_b` and for 201 disk files we get 201 different `F_d`.
  
 After we get these bulge and disk factors we simply multiply them by the `bulge.fits` and `disk.fits` to get `scaled_bulge.fits` and `scaled_disk.fits`.
 
