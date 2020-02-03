@@ -236,8 +236,9 @@ Then, we get bulge factor and disk factor using the formula:
 ![](images/bf_bd.png)
  
  where, `F_b` is the flux of a bulge file (e.g. `simdatabase/bulge_f8/f814w_bulge0.fits`) and `F_d` is the flux of a disk file (e.g. `simdatabase/disk_f8/f814w_disk0.fits`). Flux is simply the total sum of pixels of given fitsfile. Here, for 201 bulge files we have 201 different `F_b` and for 201 disk files we get 201 different `F_d`.
- 
-After we get these bulge and disk factors we simply multiply them by the `bulge.fits` and `disk.fits` to get `scaled_bulge.fits` and `scaled_disk.fits`.
+
+Now we have `bf` and `df` for 201 bulge and disk files. To get `scaled_bulge.fits` and `scaled_disk.fits` we simply mulitply
+corresponding `bf` or `df` to the  `bulge.fits` and `disk.fits`.
 
 
 ## Step3: Run jedisim
