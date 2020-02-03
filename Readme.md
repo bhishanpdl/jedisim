@@ -217,7 +217,7 @@ The wavelengths $\lambda_0$ and $\lambda_{20}$ are the LSST R-band filter blue a
 We divide these wavelengths by a factor ($1 + z$) to get the range 2208 to 2764 for the redshift of `z = 1.5`.
 
 Similarly, for the HST the wavelengths are $\lambda_{hst0} = 7077.5 $ Angstrom and $\lambda_{hst20} = 9588.5 $ Angstrom.
-After dividing by $ 1 + z_{cutout} = 1 + 0.2$ we get $\lambda_{hst0} = 5897.9 $ Angstrom and $\lambda_{hst20} = 7990.4 $ Angstrom where redshift of cutout is `z_cutout = 0.2`. We can get more details about HST ACS/WFC filter at the [website](http://www.stsci.edu/hst/acs/documents/handbooks/current/c05_imaging2.html).
+After dividing by $ 1 + z_{cutout} = 1 + 0.2$ we get $\lambda_{hst0} = 5897.9 $ Angstrom and $\lambda_{hst20} = 7990.4 $ Angstrom where redshift of cutout is `z_cutout = 0.2`. We can get more details about HST ACS/WFC filter [here](http://www.stsci.edu/hst/acs/documents/handbooks/current/c05_imaging2.html).
 
 Then, we get bulge factor and disk factor using the formula:
 
