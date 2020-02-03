@@ -177,7 +177,7 @@ We use the script `a04_scaled_gals.py` and get `f814w_scaled_bulge0.fits` and `f
 
 > We use the DMStack Pipepline `Clusters` to get the mass estimates of the galaxy clusters.
 
-# PSF Creation for Bulge, Disk, and Monochromatic Images
+# Step1: Create PSF for bulge disk and mono
 From the PHOSIM Software we have created 21 narrowband PSFs. Now we will use them to create PSF for scaled bulge, disk, and monochromatic images. The scaled psf files are given by formula:
 
 ![](images/psf_bdm.png)
@@ -195,10 +195,7 @@ From the PHOSIM Software we have created 21 narrowband PSFs. Now we will use the
 - These SED files do not have the step size of 1 Angstrom, so we interpolate the sed and create new sed files.
 - After creating new SED files, we integrate the flux in given narrowband to get the quantities `b0 b1 ... b20 etc`.
 
-```
-
-
-# Creation of Scaled Bulge, Disk, and Monochromatic Images
+# Step2: Create Scaled Bulge, Disk, and Monochromatic Images
 We have total 201 number of HST images, so we have 201 bulge images and 201 disk images.
 From these two folders we create so called `scaled_bulge`, `scaled_disk`, and `scaled_bulge_disk` folders. 
 For this, we first find the `bulge_factor` (bf) and `disk_factor` (df) then we create scaled galaxies.
@@ -207,7 +204,6 @@ For this, we first find the `bulge_factor` (bf) and `disk_factor` (df) then we c
   $$ scaleddisk = df * disk.fits$$
  
  
-
 To find bulge and disk factors, first we find fraction for bulge ratio and fraction of disk ratio as follows:
 
  $$
@@ -235,7 +231,8 @@ $$
  
 After we get these bulge and disk factors we simply multiply them by the `bulge.fits` and `disk.fits` to get `scaled_bulge.fits` and `scaled_disk.fits`.
 
-# Summary Images
+
+# Step3: Run jedisim
 ![](images/galaxy_fitting.png)
 ![](images/rescaling_bulge_disk.png)
 ![](images/psf_from_phosim.png)
