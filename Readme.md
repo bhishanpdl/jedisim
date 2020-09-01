@@ -250,6 +250,71 @@ corresponding `bf` or `df` to the  `bulge.fits` and `disk.fits`.
 ![](images/hst_convolve.png)
 ![](images/chro_mono.png)
 
+# Chromatic vs monochromatic
+```python
+def lsst_monochromatic(config):
+    """Add Poissson noise to the convolved-scaled bulge_disk image.
+
+    :Output: jedisim_out/out0/lsst_mono.fits
+
+    """
+    # After running lsst_TDCR with the configm.sh file
+    # we will get:
+    # jedisim_out/out0/scaled_bulge_disk/trial1_lsst_bulge_disk.fits
+    #
+    # we add noise to this and get lsst_monochromatic image.
+    #
+    # jedisim_out/out0/scaled_bulge_disk/trial1_lsst_mono.fits
+    # XXX MAIN OUTPUT 2
+    run_process("jedinoise", ['./executables/jedinoise',
+                              config['rescaled_outfilem'],
+                              config['exp_time'],
+                              config['noise_mean'],
+                              config["lsst_mono"]
+                              ])
+
+    # XXX: Added  Mar 25, 2018
+    # Add fake wcs
+    # DMstack obs_file needs WCS info
+    add_wcs(config["lsst_mono"])
+
+def lsst_chromatic(configb,configd,configm):
+    """Combine lsst_bulge and lsst_disk and add noise.
+
+    :Inputs: The inputs are
+      - jedisim_out/out0/scaled_bulge/trial1_lsst_bulge.fits
+      - jedisim_out/out0/scaled_disk/trial1_lsst_disk.fits
+
+    :Output: The output files are
+      - jedisim_out/out0/scaled_bulge_disk/trial1_lsst_unnoised.fits
+      - jedisim_out/out0/scaled_bulge_disk/trail1_lsst.fits
+
+    # main output 1
+
+    """
+
+    # Combine lsst_bulge with lsst_disk and call it lsst_unnoised.fits
+    dat = fits.getdata(configb['rescaled_outfileb']) +   \
+          fits.getdata(configd['rescaled_outfiled'])
+    fits.writeto(configm["lsst_unnoised"], dat,
+             header = fits.getheader(configb['rescaled_outfileb']), clobber=True)
+
+
+    # Add noise to  chromatic image and choose this as lsst final output.
+    # jedisim_out/out0/scaled_bulge_disk/trial1_lsst.fits  # main output 1
+    run_process("jedinoise", ['./executables/jedinoise',
+                              configm['lsst_unnoised'],
+                              configm['exp_time'],
+                              configm['noise_mean'],
+                              configm["lsst"]
+                              ])
+    # XXX: Added  Mar 26, 2018
+    # Add fake wcs
+    # DMstack obs_file needs WCS info
+    add_wcs(configm["lsst"])
+```
+
+
 # Technical Notes
 ## Copyright
 The C-programs and basic skeleton was  was developed by *Daniel Parker*  and *Ian Dell'Antonio* 
