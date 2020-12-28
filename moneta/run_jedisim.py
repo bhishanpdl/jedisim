@@ -23,7 +23,7 @@
 
 :Runtime:
 
-:Command: python run_jedisim.py -z 0.7 -c simplici -s 0 -e 0
+:Command: python run_jedisim.py -z 1.5 -c simplici -s 0 -e 0
 
 :Changes:
 
@@ -59,7 +59,7 @@ def jedisim_outfolders(config_path):
     # keys = ['lsst', 'lsst_mono', 'gcsb','gcsd','gcsm','catalog','dislist']
 
     keys = ['lsst', 'lsst_mono', 'catalog','dislist']
-    tm   = time.strftime("%Y_%m_%H_%M")
+    tm   = time.strftime("%Y_%m_%d_%H_%M")
     odirs = ['jedisim_output/jout_z{}_{}/z{}/{}/'.format(z,tm,z,key) for key in keys ]
 
     for i, odir in enumerate(odirs):
@@ -77,10 +77,10 @@ def jedisim_outfolders(config_path):
 
     return jouts
 
-# this will run jedisim.py in a loop after creatin jouts (jedisim_output/)
+# this will run jedisim.py in a loop after creating jouts (jedisim_output/)
 def run_jedisim(start, end, z, computer, config_path,jouts):
     # Write output names in dropbox textfile.
-    odir = '/Users/poudel/Dropbox/jout'
+    odir = 'jout'
     tm = time.strftime("%Y_%m_%d_%H_%M")
 
     if not os.path.isdir(odir):
@@ -97,11 +97,11 @@ def run_jedisim(start, end, z, computer, config_path,jouts):
     # we copy them to appropriate place
 
     # 1. Copy 3 psf files (bulge,disk,mono for given redshift)
-    for p in list('bdm'):
-        infile = r'psf/psf{}.fits'.format(p)
-        outfile = jouts['psf'] + '/psf{}_z{}.fits'.format(p,z)
-        if not os.path.isfile(outfile):
-            shutil.copy(infile,outfile)
+    #for p in list('bdm'):
+        #infile = r'psf/psf{}.fits'.format(p)
+        #outfile = jouts['psf'] + '/psf{}_z{}.fits'.format(p,z)
+        #if not os.path.isfile(outfile):
+            #shutil.copy(infile,outfile)
 
 
     # Run jedisim in a loop
@@ -115,7 +115,7 @@ def run_jedisim(start, end, z, computer, config_path,jouts):
 
         # 1. Copy lsst file
         infile = r'jedisim_out/out0/scaled_bulge_disk/trial1_lsst.fits'
-        outfile = jouts['lsst'] + 'lsst_z{}_{}.fits'.format(z,i)
+        outfile = jouts['lsst'] + 'lsst_z{}_{:03d}.fits'.format(z,i)
         os.rename(infile, outfile)
 
         # debug
@@ -124,79 +124,79 @@ def run_jedisim(start, end, z, computer, config_path,jouts):
 
         # 2. Copy lsst_mono file
         infile = r'jedisim_out/out0/scaled_bulge_disk/trial1_lsst_mono.fits'
-        outfile = jouts['lsst_mono'] + 'lsst_mono_z{}_{}.fits'.format(z,i)
+        outfile = jouts['lsst_mono'] + 'lsst_mono_z{}_{:03d}.fits'.format(z,i)
         os.rename(infile, outfile)
 
         # copy gcsb, gcsd, and gcsm only at end of production.
         # # 3. Copy gcsb   convolved-scaled-bulge
         # infile = r'jedisim_out/out0/scaled_bulge/trial1_lsst_bulge.fits'
-        # outfile = jouts['gcsb'] + 'gcsb_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsb'] + 'gcsb_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
         #
         #
         # # 4. Copy gcsd convolved-scaled-disk
         # infile = r'jedisim_out/out0/scaled_disk/trial1_lsst_disk.fits'
-        # outfile = jouts['gcsd'] + 'gcsd_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsd'] + 'gcsd_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
         #
         #
         # # 5. Copy gcsm convolved-scaled-bulge_disk
         # infile = r'jedisim_out/out0/scaled_bulge_disk/trial1_lsst_bulge_disk.fits'
-        # outfile = jouts['gcsm'] + 'gcsm_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsm'] + 'gcsm_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
 
 
         # 6. Copy catalog.txt for bulge
         infile = r'jedisim_out/out0/scaled_bulge/trial1_catalog.txt'
-        outfile = jouts['catalog'] + 'catalog_z{}_{}.txt'.format(z,i)
+        outfile = jouts['catalog'] + 'catalog_z{}_{:03d}.txt'.format(z,i)
         os.rename(infile, outfile)
 
 
         # 7. Copy dislist.txt for bulge
         infile = r'jedisim_out/out0/scaled_bulge/trial1_dislist.txt'
-        outfile = jouts['dislist'] + 'dislist_z{}_{}.txt'.format(z,i)
+        outfile = jouts['dislist'] + 'dislist_z{}_{:03d}.txt'.format(z,i)
         os.rename(infile, outfile)
 
         ##*************************************************************
         # For 90 degree rotated case
         # 1-90. Copy lsst file
         infile = r'jedisim_out/out90/scaled_bulge_disk/90_trial1_lsst.fits'
-        outfile = jouts['lsst90'] + 'lsst90_z{}_{}.fits'.format(z,i)
+        outfile = jouts['lsst90'] + 'lsst90_z{}_{:03d}.fits'.format(z,i)
         os.rename(infile, outfile)
 
         # 2-90. Copy lsst_mono file
         infile = r'jedisim_out/out90/scaled_bulge_disk/90_trial1_lsst_mono.fits'
-        outfile = jouts['lsst_mono90'] + 'lsst_mono90_z{}_{}.fits'.format(z,i)
+        outfile = jouts['lsst_mono90'] + 'lsst_mono90_z{}_{:03d}.fits'.format(z,i)
         os.rename(infile, outfile)
 
         # NOTE: copy these files only at last step
         # # 3-90. Copy gcsb   convolved-scaled-bulge
         # infile = r'jedisim_out/out90/scaled_bulge/90_trial1_lsst_bulge.fits'
-        # outfile = jouts['gcsb90'] + 'gcsb90_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsb90'] + 'gcsb90_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
         #
         #
         # # 4-90. Copy gcsd convolved-scaled-disk
         # infile = r'jedisim_out/out90/scaled_disk/90_trial1_lsst_disk.fits'
-        # outfile = jouts['gcsd90'] + 'gcsd90_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsd90'] + 'gcsd90_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
         #
         #
         # # 5-90. Copy gcsm convolved-scaled-bulge_disk
         # infile = r'jedisim_out/out90/scaled_bulge_disk/90_trial1_lsst_bulge_disk.fits'
-        # outfile = jouts['gcsm90'] + 'gcsm90_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsm90'] + 'gcsm90_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
 
 
         # 6-90. Copy catalog.txt for bulge
         infile = r'jedisim_out/out90/scaled_bulge/90_trial1_catalog.txt'
-        outfile = jouts['catalog90'] + 'catalog90_z{}_{}.txt'.format(z,i)
+        outfile = jouts['catalog90'] + 'catalog90_z{}_{:03d}.txt'.format(z,i)
         os.rename(infile, outfile)
 
 
         # 7-90. Copy dislist.txt for bulge
         infile = r'jedisim_out/out90/scaled_bulge/90_trial1_dislist.txt'
-        outfile = jouts['dislist90'] + 'dislist90_z{}_{}.txt'.format(z,i)
+        outfile = jouts['dislist90'] + 'dislist90_z{}_{:03d}.txt'.format(z,i)
         os.rename(infile, outfile)
 
         # Append output names in Dropbox
@@ -210,7 +210,7 @@ def run_jedisim(start, end, z, computer, config_path,jouts):
 
 
 if __name__ == "__main__":
-    # command: python run_jedisim.py 0.7 pisces 0 0
+    # command: python run_jedisim.py 1.5 pisces 0 0
 
     # Beginning time
     program_begin_time = time.time()
@@ -262,7 +262,7 @@ if __name__ == "__main__":
     os.system('rm -rf __pycache__')
 
     # # notify
-    #notify()
+    notify()
 
     # Print the time taken
     program_end_time = time.time()
@@ -278,12 +278,14 @@ if __name__ == "__main__":
 
 #
 """
-python run_jedisim.py -z 1.5 -c simplici -s 0 -e 0
-python run_jedisim.py -z 1.5 -c simplici -s 0 -e 100 > /dev/null 2>&1 &
+python run_jedisim.py -z 1.5 -c simplici -s 0 -e 99
+python run_jedisim.py -z 1.5 -c simplici -s 0 -e 99 > /dev/null 2>&1 &
 
-python run_jedisim.py -z 1.5 -c pisces -s 0 -e 0
-python run_jedisim.py -z 1.5 -c pisces -s 0 -e 100 > /dev/null 2>&1 &
+python run_jedisim.py -z 1.5 -c pisces -s 0 -e 99
 
-python run_jedisim.py -z 1.5 -c moneta -s 0 -e 0
-python run_jedisim.py -z 1.5 -c moneta -s 0 -e 100 > /dev/null 2>&1 &
+python run_jedisim.py -z 1.5 -c ubuntu -s 0 -e 99
+
+python run_jedisim.py -z 1.5 -c moneta -s 0 -e 99 > /dev/null 2>&1 &
+
+Change 0 to 100 or the last number+1 the file you have so far.
 """

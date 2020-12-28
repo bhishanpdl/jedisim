@@ -149,3 +149,10 @@ export PATH
 ```
 
 # Run jedisim
+```bash
+python run_jedisim.py -z 1.5 -c moneta -s 0 -e 0 # check if this finishes
+python run_jedisim.py -z 1.5 -c moneta -s 0 -e 99 > /dev/null 2>&1 &
+
+# check processes
+top # there should be some process like jedicatalog jedidistort etc.
+```
