@@ -27,26 +27,48 @@ def rename_files(idir,z,start,end,increment):
     folders_txt = ['catalog','catalog90','dislist','dislist90']
     folders_fits = ['lsst','lsst90','lsst_mono','lsst_mono90']
 
+    # WARNING: We should use reversed loop for renaming files
     for folder in folders_txt:
-        for i in range(start,end+1):
-            # try/catalog/catalog_z1.5_000.txt
-            f  = '{}/{}/{}_z{:.1f}_{:03d}.txt'.format(idir,folder,folder,z,i)
-            f2 = '{}/{}/{}_z{:.1f}_{:03d}.txt'.format(idir,folder,folder,z,i+increment)
-            print("\n")
-            print('From: ', f)
-            print('To  : ', f2)
-            #os.rename(f, f2)
+        if increment > 0:
+            for i in range(end,start-1,-1):
+                # try/catalog/catalog_z1.5_000.txt
+                f  = '{}/{}/{}_z{:.1f}_{:03d}.txt'.format(idir,folder,folder,z,i)
+                f2 = '{}/{}/{}_z{:.1f}_{:03d}.txt'.format(idir,folder,folder,z,i+increment)
+                print("\n")
+                print('From: ', f)
+                print('To  : ', f2)
+                #os.rename(f, f2)
+
+        else:
+            for i in range(start,end+1,1):
+                # try/catalog/catalog_z1.5_000.txt
+                f  = '{}/{}/{}_z{:.1f}_{:03d}.txt'.format(idir,folder,folder,z,i)
+                f2 = '{}/{}/{}_z{:.1f}_{:03d}.txt'.format(idir,folder,folder,z,i+increment)
+                print("\n")
+                print('From: ', f)
+                print('To  : ', f2)
+                #os.rename(f, f2)
 
     for folder in folders_fits:
-        for i in range(start,end+1):
-            # try/lsst/lsst_z1.5_000.fits
-            f  = '{}/{}/{}_z{:.1f}_{:03d}.fits'.format(idir,folder,folder,z,i)
-            f2 = '{}/{}/{}_z{:.1f}_{:03d}.fits'.format(idir,folder,folder,z,i+increment)
-            print("\n")
-            print('From: ', f)
-            print('To  : ', f2)
-            #os.rename(f, f2)
+        if increment > 0:
+            for i in range(end,start-1,-1):
+                # try/lsst/lsst_z1.5_000.fits
+                f  = '{}/{}/{}_z{:.1f}_{:03d}.fits'.format(idir,folder,folder,z,i)
+                f2 = '{}/{}/{}_z{:.1f}_{:03d}.fits'.format(idir,folder,folder,z,i+increment)
+                print("\n")
+                print('From: ', f)
+                print('To  : ', f2)
+                #os.rename(f, f2)
 
+        else:
+            for i in range(start,end+1,1):
+                # try/lsst/lsst_z1.5_000.fits
+                f  = '{}/{}/{}_z{:.1f}_{:03d}.fits'.format(idir,folder,folder,z,i)
+                f2 = '{}/{}/{}_z{:.1f}_{:03d}.fits'.format(idir,folder,folder,z,i+increment)
+                print("\n")
+                print('From: ', f)
+                print('To  : ', f2)
+                #os.rename(f, f2)
 
 def main():
     import argparse
