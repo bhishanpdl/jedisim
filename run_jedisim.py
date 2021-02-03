@@ -23,11 +23,11 @@
 
 :Runtime:
 
-:Command: python run_jedisim.py -z 0.7 -c simplici -s 0 -e 0
+:Command: python run_jedisim.py -z 0.7 -c pisces -s 0 -e 0
 
 :Changes:
 
-  - replaced shutil.copyfile by os.rename except for psf copy.
+  - replaced shutil.copyfile by os.rename except for psf shutil.copy.
   - Renamed output folder names and dropbox file name.
 
 """
@@ -42,7 +42,7 @@ import re
 import shutil
 import copy
 import time
-from util import run_process,updated_config,replace_outfolder,notify
+from util import run_process,updated_config,replace_outfolder, notify
 
 # start time
 start_time = time.time()
@@ -59,7 +59,7 @@ def jedisim_outfolders(config_path):
     # keys = ['lsst', 'lsst_mono', 'gcsb','gcsd','gcsm','catalog','dislist']
 
     keys = ['lsst', 'lsst_mono', 'catalog','dislist']
-    tm   = time.strftime("%Y_%m_%H_%M")
+    tm   =  time.strftime("%Y_%m_%d_%H_%M")
     odirs = ['jedisim_output/jout_z{}_{}/z{}/{}/'.format(z,tm,z,key) for key in keys ]
 
     for i, odir in enumerate(odirs):
@@ -115,7 +115,7 @@ def run_jedisim(start, end, z, computer, config_path,jouts):
 
         # 1. Copy lsst file
         infile = r'jedisim_out/out0/scaled_bulge_disk/trial1_lsst.fits'
-        outfile = jouts['lsst'] + 'lsst_z{}_{}.fits'.format(z,i)
+        outfile = jouts['lsst'] + 'lsst_z{}_{:03d}.fits'.format(z,i)
         os.rename(infile, outfile)
 
         # debug
@@ -124,79 +124,79 @@ def run_jedisim(start, end, z, computer, config_path,jouts):
 
         # 2. Copy lsst_mono file
         infile = r'jedisim_out/out0/scaled_bulge_disk/trial1_lsst_mono.fits'
-        outfile = jouts['lsst_mono'] + 'lsst_mono_z{}_{}.fits'.format(z,i)
+        outfile = jouts['lsst_mono'] + 'lsst_mono_z{}_{:03d}.fits'.format(z,i)
         os.rename(infile, outfile)
 
         # copy gcsb, gcsd, and gcsm only at end of production.
         # # 3. Copy gcsb   convolved-scaled-bulge
         # infile = r'jedisim_out/out0/scaled_bulge/trial1_lsst_bulge.fits'
-        # outfile = jouts['gcsb'] + 'gcsb_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsb'] + 'gcsb_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
         #
         #
         # # 4. Copy gcsd convolved-scaled-disk
         # infile = r'jedisim_out/out0/scaled_disk/trial1_lsst_disk.fits'
-        # outfile = jouts['gcsd'] + 'gcsd_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsd'] + 'gcsd_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
         #
         #
         # # 5. Copy gcsm convolved-scaled-bulge_disk
         # infile = r'jedisim_out/out0/scaled_bulge_disk/trial1_lsst_bulge_disk.fits'
-        # outfile = jouts['gcsm'] + 'gcsm_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsm'] + 'gcsm_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
 
 
         # 6. Copy catalog.txt for bulge
         infile = r'jedisim_out/out0/scaled_bulge/trial1_catalog.txt'
-        outfile = jouts['catalog'] + 'catalog_z{}_{}.txt'.format(z,i)
+        outfile = jouts['catalog'] + 'catalog_z{}_{:03d}.txt'.format(z,i)
         os.rename(infile, outfile)
 
 
         # 7. Copy dislist.txt for bulge
         infile = r'jedisim_out/out0/scaled_bulge/trial1_dislist.txt'
-        outfile = jouts['dislist'] + 'dislist_z{}_{}.txt'.format(z,i)
+        outfile = jouts['dislist'] + 'dislist_z{}_{:03d}.txt'.format(z,i)
         os.rename(infile, outfile)
 
-        ##*************************************************************
+        # *************************************************************
         # For 90 degree rotated case
         # 1-90. Copy lsst file
         infile = r'jedisim_out/out90/scaled_bulge_disk/90_trial1_lsst.fits'
-        outfile = jouts['lsst90'] + 'lsst90_z{}_{}.fits'.format(z,i)
+        outfile = jouts['lsst90'] + 'lsst90_z{}_{:03d}.fits'.format(z,i)
         os.rename(infile, outfile)
 
         # 2-90. Copy lsst_mono file
         infile = r'jedisim_out/out90/scaled_bulge_disk/90_trial1_lsst_mono.fits'
-        outfile = jouts['lsst_mono90'] + 'lsst_mono90_z{}_{}.fits'.format(z,i)
+        outfile = jouts['lsst_mono90'] + 'lsst_mono90_z{}_{:03d}.fits'.format(z,i)
         os.rename(infile, outfile)
 
         # NOTE: copy these files only at last step
         # # 3-90. Copy gcsb   convolved-scaled-bulge
         # infile = r'jedisim_out/out90/scaled_bulge/90_trial1_lsst_bulge.fits'
-        # outfile = jouts['gcsb90'] + 'gcsb90_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsb90'] + 'gcsb90_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
         #
         #
         # # 4-90. Copy gcsd convolved-scaled-disk
         # infile = r'jedisim_out/out90/scaled_disk/90_trial1_lsst_disk.fits'
-        # outfile = jouts['gcsd90'] + 'gcsd90_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsd90'] + 'gcsd90_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
         #
         #
         # # 5-90. Copy gcsm convolved-scaled-bulge_disk
         # infile = r'jedisim_out/out90/scaled_bulge_disk/90_trial1_lsst_bulge_disk.fits'
-        # outfile = jouts['gcsm90'] + 'gcsm90_z{}_{}.fits'.format(z,i)
+        # outfile = jouts['gcsm90'] + 'gcsm90_z{}_{:03d}.fits'.format(z,i)
         # os.rename(infile, outfile)
 
 
         # 6-90. Copy catalog.txt for bulge
         infile = r'jedisim_out/out90/scaled_bulge/90_trial1_catalog.txt'
-        outfile = jouts['catalog90'] + 'catalog90_z{}_{}.txt'.format(z,i)
+        outfile = jouts['catalog90'] + 'catalog90_z{}_{:03d}.txt'.format(z,i)
         os.rename(infile, outfile)
 
 
         # 7-90. Copy dislist.txt for bulge
         infile = r'jedisim_out/out90/scaled_bulge/90_trial1_dislist.txt'
-        outfile = jouts['dislist90'] + 'dislist90_z{}_{}.txt'.format(z,i)
+        outfile = jouts['dislist90'] + 'dislist90_z{}_{:03d}.txt'.format(z,i)
         os.rename(infile, outfile)
 
         # Append output names in Dropbox
@@ -218,10 +218,10 @@ if __name__ == "__main__":
 
     # run command:
     # python run_jedisim.py -z 0.7 -c pisces -s 0 -e 0
-
+    
     import argparse
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--manual", help="python run_jedisim.py -z 0.7 -c simplici -s 0 -e 0 > /dev/null 2>&1 &",type=str, required=False)
+    parser.add_argument("-m", "--manual", help="python run_jedisim.py -z 0.7 -c pisces -s 0 -e 0 > /dev/null 2>&1",type=str, required=False)
     parser.add_argument("-z", "--redshift", help="Redshift of the cluster",type=float, required=True)
     parser.add_argument("-c", "--computer", help="Host computer to running this program.", required=True)
     parser.add_argument("-s", "--start", help="Iteration start",
@@ -233,19 +233,19 @@ if __name__ == "__main__":
     computer = args.computer
     start = args.start
     end = args.end
-
-
+    
+    
     # First create config files configb,configd and configm
     run_process("config", ['python', "a01_jedisim_config.py", "-z %f" % z]) # 0.6 sec
-
+    
     # Config path (configb is created from template for given redshift.)
     config_path = "physics_settings/configb.sh"
-
+    
     # Create output folders to copy final files (jedisim_out)
     # after reading configb file.
     jouts = jedisim_outfolders(config_path)
-
-
+    
+    
     # Run pre-jedisim programs
     # Takes about 5 mins.
     run_process("interpolate", ['python', "a02_interpolate_sed.py"]) # 3 sec
@@ -254,15 +254,18 @@ if __name__ == "__main__":
     run_process("bd weights",  ['python', "a05_bd_weights_psf.py"]) # 3.5 sec
     run_process("bd flux rat", ['python', "a06_scaled_bd_flux_rat.py"]) # 28 sec
     run_process("psf",         ['python', "a07_psf_bdmono.py"]) # 10 sec
-
+    
     #  Run the main program
     run_jedisim(start, end, z, computer, config_path,jouts)
-
+    
     # delete temp python directory (unix)
-    os.system('rm -rf __pycache__')
-
-    # # notify
-    #notify()
+    try:
+        shutil.rmtree('__pycache__')
+    except:
+        pass
+    
+    # For MacOS show notification
+    notify()
 
     # Print the time taken
     program_end_time = time.time()
@@ -275,15 +278,11 @@ if __name__ == "__main__":
     print("End   time: ", end_ctime, "\n")
     print("Time taken: {0: .0f} days, {1: .0f} hours, \
       {2: .0f} minutes, {3: f} seconds.".format(d, h, m, s))
-
+      
 #
 """
-python run_jedisim.py -z 1.5 -c simplici -s 0 -e 0
-python run_jedisim.py -z 1.5 -c simplici -s 0 -e 100 > /dev/null 2>&1 &
+:Command: python run_jedisim.py -z 1.5 -c pisces -s 0 -e 0
+:Command: python run_jedisim.py -z 1.5 -c pisces -s 0 -e 999 > /dev/null 2>&1 &
 
-python run_jedisim.py -z 1.5 -c pisces -s 0 -e 0
-python run_jedisim.py -z 1.5 -c pisces -s 0 -e 100 > /dev/null 2>&1 &
-
-python run_jedisim.py -z 1.5 -c moneta -s 0 -e 0
-python run_jedisim.py -z 1.5 -c moneta -s 0 -e 100 > /dev/null 2>&1 &
+NOTE: Use correct number e.g. -s 200 to -e 299
 """

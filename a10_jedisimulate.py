@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """This program makes a realistic simulation of LSST images.
 
-.. note:: TDCR is transform-distort-convolve-rescale:
+.. note:: TDPCR is transform-distort-convolve-rescale:
 
   - jeditransform will transforms bulge-disk fitsfiles and creates 12420 zipped stamps and also create dislist.txt.
   - jedidistort will distort the zipped stamps according to the dislist.txt and writes 12420 unzipped distorted fitsfiles.
@@ -34,10 +34,10 @@ import copy
 import numpy as np
 from astropy.io import fits
 # local imports
-from util import replace_outfolder, run_process, updated_config, add_stars, add_wcs
+from util import replace_outfolder, run_process, updated_config
 
 
-def lsst_TDCR(config, psf_name, rescaled_outfile,multiply_value):
+def lsst_TDPCR(config, psf_name, rescaled_outfile,multiply_value):
     """Create a single lsst_bulge or lsst_disk or lsst_bulge_disk image
     images after running 6 programs for an input folder simdatabase/scaled_bulge
     scaled_disk and scaled_bulge_disk.
@@ -83,7 +83,7 @@ def lsst_TDCR(config, psf_name, rescaled_outfile,multiply_value):
     #
     # It also creates dislist for the jedidistort,viz.,
     # jedisim_out/out0/scaled_bulge/trial1_dislist.txt.
-    print("Running lsst_TDCR for : {}".format(rescaled_outfile))
+    print("Running lsst_TDPCR for : {}".format(rescaled_outfile))
     run_process("jeditransform", ['./executables/jeditransform',
                                   config['catalog_file'],
                                   config['dislist_file']
@@ -123,10 +123,6 @@ def lsst_TDCR(config, psf_name, rescaled_outfile,multiply_value):
     # fb is for bulge, and fd is for disk
     data = fits.getdata(config['HST_image']) * float(multiply_value)
     fits.writeto(config['HST_image'],data,clobber=True)
-
-
-    # XXX: ADDED  Mar 25, 2018
-    add_stars(config['HST_image'], config['n_stars'], config['star_value'],config['star_positions'])
 
 
     # Convolve the given single fitsfile with given PSF and write 6 bands
@@ -177,7 +173,7 @@ def lsst_monochromatic(config):
     :Output: jedisim_out/out0/lsst_mono.fits
 
     """
-    # After running lsst_TDCR with the configm.sh file
+    # After running lsst_TDPCR with the configm.sh file
     # we will get:
     # jedisim_out/out0/scaled_bulge_disk/trial1_lsst_bulge_disk.fits
     #
@@ -191,11 +187,6 @@ def lsst_monochromatic(config):
                               config['noise_mean'],
                               config["lsst_mono"]
                               ])
-
-    # XXX: Added  Mar 25, 2018
-    # Add fake wcs
-    # DMstack obs_file needs WCS info
-    add_wcs(config["lsst_mono"])
 
 def lsst_chromatic(configb,configd,configm):
     """Combine lsst_bulge and lsst_disk and add noise.
@@ -227,10 +218,6 @@ def lsst_chromatic(configb,configd,configm):
                               configm['noise_mean'],
                               configm["lsst"]
                               ])
-    # XXX: Added  Mar 26, 2018
-    # Add fake wcs
-    # DMstack obs_file needs WCS info
-    add_wcs(configm["lsst"])
 
 def main():
     """Run main function."""
@@ -246,9 +233,9 @@ def main():
     # Get factors to multiply bulge and disk
     fb, fd = np.genfromtxt(configm['bd_flux_rat'], dtype=float, unpack=True)
 
-    lsst_TDCR(configb, configb['psfb'], configb['rescaled_outfileb'],fb)  # out 3
-    lsst_TDCR(configd, configd['psfd'], configd['rescaled_outfiled'],fd)  # out 4
-    lsst_TDCR(configm, configm['psfm'], configm['rescaled_outfilem'],1.0) # out 5
+    lsst_TDPCR(configb, configb['psfb'], configb['rescaled_outfileb'],fb)  # out 3
+    lsst_TDPCR(configd, configd['psfd'], configd['rescaled_outfiled'],fd)  # out 4
+    lsst_TDPCR(configm, configm['psfm'], configm['rescaled_outfilem'],1.0) # out 5
 
 
     # get final monochromatic image

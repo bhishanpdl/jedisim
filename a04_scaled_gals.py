@@ -64,19 +64,19 @@ def scale_galaxies(NUM_GALS, config):
         outfileb = 'simdatabase/scaled_bulge_f8/f814w_scaled_bulge{:d}.fits'.format(i)
         datb = fits.getdata(infileb)
         datb = datb * b[i]
-        fits.writeto(outfileb, datb, header = getheader(infileb), clobber=False)
+        fits.writeto(outfileb, datb, header = getheader(infileb), overwrite=False)
 
         # for disk
         infiled = 'simdatabase/disk_f8/f814w_disk{:d}.fits'.format(i)
         outfiled = 'simdatabase/scaled_disk_f8/f814w_scaled_disk{:d}.fits'.format(i)
         datd = fits.getdata(infiled)
         datd = datd * d[i]
-        fits.writeto(outfiled, datd, header = getheader(infiled), clobber=False)
+        fits.writeto(outfiled, datd, header = getheader(infiled), overwrite=False)
 
         # for monochromatic we combine them
         outfile = 'simdatabase/scaled_bulge_disk_f8/f814w_scaled_bulge_disk{:d}.fits'.format(i)
         dat = datb + datd
-        fits.writeto(outfile, dat, header = getheader(infiled), clobber=False)
+        fits.writeto(outfile, dat, header = getheader(infiled), overwrite=False)
 
 
 def main():

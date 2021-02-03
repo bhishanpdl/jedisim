@@ -2,7 +2,7 @@
 # -*- coding: utf-8 -*-
 """This program makes a realistic simulation of LSST images.
 
-.. note:: TDCR is transform-distort-convolve-rescale:
+.. note:: TDPCR is transform-distort-convolve-rescale:
 
   - jeditransform will transforms bulge-disk fitsfiles and creates 12420 zipped stamps and also create dislist.txt.
   - jedidistort will distort the zipped stamps according to the dislist.txt and writes 12420 unzipped distorted fitsfiles.
@@ -29,11 +29,11 @@ import time
 import numpy as np
 from astropy.io import fits
 # local imports
-from util import replace_outfolder, run_process, updated_config, add_stars, add_wcs
+from util import replace_outfolder, run_process, updated_config
 
 # NOTE: for 90 degree odirs and catalogs are already created.
 
-def lsst_TDCR(config, psf_name, rescaled_outfile90,multiply_value):
+def lsst_TDPCR(config, psf_name, rescaled_outfile90,multiply_value):
     """Create a single lsst_bulge or lsst_disk or lsst_bulge_disk image
     images after running 6 programs. We will add noise to this later.
 
@@ -123,8 +123,6 @@ def lsst_TDCR(config, psf_name, rescaled_outfile90,multiply_value):
     fits.writeto(config['90_HST_image'],data,clobber=True)
 
 
-    # XXX: ADDED  Mar 25, 2018
-    add_stars(config['90_HST_image'], config['n_stars'], config['star_value'],config['star_positions'])
 
     # Convolve the given single fitsfile with given PSF and write 6 bands
     # of convolved images.
@@ -168,11 +166,6 @@ def lsst_monochromatic(config):
                               config['noise_mean'],
                               config["90_lsst_mono"]
                               ])
-    #
-    # XXX: Added  Mar 29, 2018
-    # Add fake wcs
-    # DMstack obs_file needs WCS info
-    add_wcs(config["90_lsst_mono"])
 
 def lsst_chromatic(configb,configd,configm):
     """Combine lsst_bulge and lsst_disk and take this as chromatic.
@@ -196,11 +189,6 @@ def lsst_chromatic(configb,configd,configm):
                               configm['noise_mean'],
                               configm["90_lsst"]
                               ])
-    #
-    # XXX: Added  Mar 26, 2018
-    # Add fake wcs
-    # DMstack obs_file needs WCS info
-    add_wcs(configm["90_lsst"])
 
 
 def main():
@@ -216,9 +204,9 @@ def main():
     fb, fd = np.genfromtxt(configm['bd_flux_rat'], dtype=float, unpack=True)
 
     # Get convolved scaled files g_csb, g_csd , and g_csm
-    lsst_TDCR(configb, configb['psfb'], configb['90_rescaled_outfileb'],fb)
-    lsst_TDCR(configd, configd['psfd'], configd['90_rescaled_outfiled'],fd)
-    lsst_TDCR(configm, configm['psfm'], configm['90_rescaled_outfilem'],1.0)
+    lsst_TDPCR(configb, configb['psfb'], configb['90_rescaled_outfileb'],fb)
+    lsst_TDPCR(configd, configd['psfd'], configd['90_rescaled_outfiled'],fd)
+    lsst_TDPCR(configm, configm['psfm'], configm['90_rescaled_outfilem'],1.0)
 
 
     # get final monochromatic image
