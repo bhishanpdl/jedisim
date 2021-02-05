@@ -203,51 +203,41 @@ For the HST case we always choose the last 12 Gyr flux column.
 Once we found the wavelenghts and flux columns then we calculated the above integrals.
 
 **3b**: Find the total fluxes of bulge, disk and hst for all the galaxies:
-$$
- \begin{eqnarray}
- F_{b} = [F_{b0}, F_{b1},...,F_{b200}] \\
- F_{d} = [F_{d0}, F_{d1},...,F_{d200}] \\
- F_{hst} = [F_{b0} + F_{d0}, F_{b1} + F_{d1},...,F_{b200} + F_{d200}] \\
- \end{eqnarray}
-$$
+```
+F_b = [F_b0, F_b1,...,F_b200]
+F_d = [F_d0, F_d1,...,F_d200]
+F_hst = [F_b0 + F_d0, F_b1 + F_d1,...,F_b200 + F_d200]
+```
 
 Here $F_{b0}$ is the sum of total pixels of bulge0.fits.
 Similarly, $F_{d0}$ is the sum of total pixels of disk0.fits.
 And $F_{hst0}$ is sum of $F_{b0}$ and $F_{d0}$.
 
 **3c**: Find scaled value of total flux for all the HST images:
-$$
- \begin{eqnarray}
- F_{hstscale} = F_b * f_{ratb} + F_d * f_{ratd}
- \end{eqnarray}
-$$
+```
+F_hstscale = F_b * f_ratb + F_d * f_ratd
+```
 
 Then we calculate the correction factor for the flux:
-$$
- \begin{eqnarray}
- F_{cor} = \frac{F_{hst}} {F_{hstscale}}
- \end{eqnarray}
-$$
+```
+ F_cor = F_hst / F_hstscale
+```
 
 Then we multiply this correction with the flux ratio to get the bulge and disk factors:
-$$
- \begin{eqnarray}
- bf = F_{cor} * f_{ratb} \\
- df = F_{cor} * f_{ratd} \\
- \end{eqnarray}
-$$
+```
+bf = F_cor * f_ratb
+df = F_cor * f_ratd
+```
 
 Here, bf and df are columns with NUM_GAL (e.g. equal to 200) rows. We write these two columns into a text file `physics_settings/bd_factors.txt` according to the config file.
 
 
 Now, in the next script `a04_scaled_gals.py` we create scaled_bulge and 
 scaled_disk fitsfiles using these factors:
-$$
- \begin{eqnarray}
- scaled\_bulge0.fits = bf0 * bulge0.fits \\
- scaled\_disk0.fits = df0 * disk.fits \\
- \end{eqnarray}
-$$
+```
+ scaled_bulge0.fits = bf0 * bulge0.fits
+ scaled_disk0.fits  = df0 * disk.fits
+```
 
 In this way we will have NUM_GAL (e.g. equal to 200) scaled galaxies from the next scipt `a04_scaled_gals.py`.
 

@@ -64,15 +64,54 @@ We divide by 1+z = 1+1.5 to get 2208A to 2764A.
 We break this into 21 parts (making integers).
 The first narrowband is 2208A to 2234A. We take the sum of flux from "ssp_pf_interpolated_z1.5.csv" and call it b0 and similarly we integrate the wavelengths of 1st narrowband from file "exp9_pf_interpolated.csv" and call it d0.
 ```
-
-# Jedisim Simulation
 ## Create star file
 - Loguniform distribution from e3 to e7 and get 300 stars.
 - This star.fits file does not depend on redshift.
+
 ## PSF for Jedisim
 - We have single star.fits.
 - We have 3 scaled psf files: psfb.fits, psfd.fits, psfm.fits.
 - We convolve these 3 psf files with the star and get image size 12288 and then rescale with LSST pixscale of 0.2 to get final size of 3398.
 - The jedisim outputs also have the final shape 3398,3398.
 
+# Jedisim Simulation
 
+## physics config file
+- Choose num of galaxies to 10k.
+- Redshift to 1.5
+- Choose other quantities.
+- Create 3 files: configb,d,m.txt
+
+## Get Interpolated SED files for Bulge and Disk
+- We have sed files "ssp\_pf.cat" and "exp9\_pf.cat".
+- This has first column wavelength 1000A to 12000A with interval of 5 Angstrom.
+- The other 12 columns are flux for galaxy age 1Gyr to 12Gyr.
+- We interpolate the wavelength to get stepsize of 1 A.
+- We use flat lambdaCDM model to get age of galaxy from redshift of 1.5.
+```python
+Age of Universe for z =  0.0 is  13.47 Gyr
+Age of Universe for z =  1.5 is  4.20 Gyr
+Age of Universe for z =  4.0 is  1.52 Gyr # we choose our galaxies were created at redshift of 4.0
+Difference                   is  2.68 Gyr
+Age of Galaxy   for z =  1.5 is     3 Gyr
+
+This gives age of 3Gyr. So, we choose the flux column for 3Gyr.
+# Wavelen 1Gyr         2Gyr         3Gyr         4Gyr         5Gyr
+# lambda  flux[0]      flux[1]      flux[2]      flux[3]      flux[4]
+1000    2.125075e-05 1.905875e-05 1.706275e-05 1.527475e-05 1.36735e-05
+
+# Wavelen 6Gyr       7Gyr         8Gyr       9Gyr        10Gyr     11Gyr       12Gyr
+# lambda  flux[5]    flux[6]      flux[7]    flux[8]     flux[9]   flux[10]    flux[11]
+1000    1.224e-05  1.095675e-05 9.8095e-06 8.78425e-06 7.868e-06 7.04975e-06 6.319e-06
+
+Here we choose the 3 Gyr galaxy, namely flux[2] from this sed file. For the HST case we always choose the last 12 Gyr flux column.
+```
+
+## Create bulge and disk factors (to create scaled galaxies at redshift z)
+![](images/f_rat_b_and_f_rat_d.png)
+```
+laml0  = 5520 / (1 + z)  # 2208.0
+laml20 = 6910 / (1 + z)  # 2764.0
+lamh0  = ( 8333 - (2511/2) ) / (1 + z_cutout) # 7077.5 / 1.2 = 5897.9 = 5898
+lamh20 = ( 8333 + (2511/2) ) / (1 + z_cutout) # 9588.5 / 1.2 = 7990.4 = 7990
+```
