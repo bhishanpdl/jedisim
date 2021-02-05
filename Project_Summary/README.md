@@ -109,9 +109,20 @@ Here we choose the 3 Gyr galaxy, namely flux[2] from this sed file. For the HST 
 
 ## Create bulge and disk factors (to create scaled galaxies at redshift z)
 ![](images/f_rat_b_and_f_rat_d.png)
-```
+```python
 laml0  = 5520 / (1 + z)  # 2208.0
 laml20 = 6910 / (1 + z)  # 2764.0
 lamh0  = ( 8333 - (2511/2) ) / (1 + z_cutout) # 7077.5 / 1.2 = 5897.9 = 5898
 lamh20 = ( 8333 + (2511/2) ) / (1 + z_cutout) # 9588.5 / 1.2 = 7990.4 = 7990
+
+F_hstscale = F_b * f_ratb + F_d * f_ratd
+F_cor = F_hst / F_hstscale # correction factor
+
+# bulge and disk factors
+bf = F_cor * f_ratb
+df = F_cor * f_ratd
+
+# get scaled bulge and disk
+scaled_bulge0.fits = bf0 * bulge0.fits
+scaled_disk0.fits  = df0 * disk.fits
 ```

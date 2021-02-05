@@ -204,8 +204,8 @@ Once we found the wavelenghts and flux columns then we calculated the above inte
 
 **3b**: Find the total fluxes of bulge, disk and hst for all the galaxies:
 ```
-F_b = [F_b0, F_b1,...,F_b200]
-F_d = [F_d0, F_d1,...,F_d200]
+F_b   = [F_b0, F_b1,...,F_b200]
+F_d   = [F_d0, F_d1,...,F_d200]
 F_hst = [F_b0 + F_d0, F_b1 + F_d1,...,F_b200 + F_d200]
 ```
 
@@ -278,12 +278,13 @@ $$
 
 Here the wavelengths used are for LSST r band.
 For example, for redshift z = 1.5 the wavelengths used are:
-$$
- \begin{eqnarray}
- \lambda_0 = \frac{5520}{1 + z} = 2208.0 \\
- \lambda_{20} = \frac{6910}{1+z} = 2764 \\
- \end{eqnarray}
-$$
+```
+lambda_0  = 5520 / (1 + z) = 2208
+lambda_20 = 6910 / (1+z)   = 2764
+
+The narrowbands are following:
+[2208, 2234, 2261, 2287, 2314,2340, 2367, 2393, 2420, 2446, 2473, 2499, 2526, 2552, 2579, 2605, 2632, 2658, 2685,2711, 2738, 2764]
+```
 
 We divide these wavelength range into 21 parts and call them narrowbands.
 
@@ -306,18 +307,16 @@ f_{r} = \frac{\sum  (\frac{F_{sb}}{F_{sd}})}{n_g}
 \end{eqnarray}
 $$
 
+
 Here, $F_{sb}$ is the flux of the given scaled bulge,
 $F_{sd}$ is the flux of the given scaled disk and $n_g$ is number of galaxies.
 For example n_g = 201.
 
 Then, we calculate disk part and bulge part of f_r as:
-$$
-\begin{eqnarray}
-f_{rd} = \frac{1}{1 + f_{r}} \\
-f_{rb} = \frac{f_{r}}{1 + f_{r}}
-\end{eqnarray}
-$$
-
+```python
+f_rd = 1   / (1 + f_r)
+f_rb = f_r / (1 + f_r)
+```
 
 For example, for redshift z = 1.5 I got the values:
 `fr = 0.0022, frb = 0.0021, and frd = 0.99785444`.
@@ -401,13 +400,11 @@ In case of bulge we call this file g_cb. Similarly we get g_cd and g_cbd.
 
 We use the routine **rescale** to change the PIXSCALE of HST (0.06) to the pixscale of LSST (0.2) to get the convolved-scaled fitsfiles. (e.g. gcsb = `jedisim_out/out0/scaled_bulge/trial1_lsst_bulge.fits`) and so on.
 
-$$
- \begin{eqnarray}
-g_{csb} = g_{cb} \otimes p_b \\
-g_{csd} = g_{cd} \otimes p_d \\
-g_{csm} = g_{cbd} \otimes p_m \\
-\end{eqnarray}
-$$
+```python
+g_csb = g_cb  * p_b # here * is convolution
+g_csd = g_cd  * p_d
+g_csm = g_cbd * p_m
+```
 
 Now we have three convolved-scaled images.
 We add the Poisson noise to the g_cbdm and call it lsst_monochromatic file.
