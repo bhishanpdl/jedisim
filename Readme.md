@@ -452,9 +452,11 @@ Schematically we can write:
 ```
 monochromatic = g_csm + Noise
 chromatic     = (g_csb + g_csd) + Noise
+
+g_csb = galaxy convolved scaled bulge
 ```
 
-**Outputs of Jedisim Program:**
+## Outputs of Jedisim Program
 For a given redshift we have three scaled psf files $p_b$, $p_d$, and $p_m$.
 In a single run of `jedisim` we will have four galaxies and two text files:
 
@@ -464,7 +466,7 @@ In a single run of `jedisim` we will have four galaxies and two text files:
 
 We also have 90 degree rotated version of these 6 files.
 
-**Trivia:**
+**Trivia:**  
 To convert markdown to pdf
 ```bash
 # First replace $$ by whitespace in markdown file, then run pandoc
