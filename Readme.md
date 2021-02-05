@@ -41,22 +41,44 @@ The bulge and disk component are created using galfit program.
 
 
 ```python
-def run_7programs_loop():
-    for i in range(0, 21):
-        run_process("jedicolor", ['./executables/jedicolor',
-        run_process("jeditransform"]
-        run_process("jedidistort",
-        run_process("jedipaste", ['./executables/jedipaste',
-        run_process("jediconvolve",
-        run_process("jedipaste", ['./executables/jedipaste',
-        run_process("jedirescale",
+lsst_TDPCR(config, psf_name, rescaled_outfile,multiply_value)
+T = transformed
+D = distort
+P = paste
+C = convolve
+R = rescale
+Create a single lsst_bulge or lsst_disk or lsst_bulge_disk image
+    images after running 6 programs for an input folder simdatabase/scaled_bulge
+    scaled_disk and scaled_bulge_disk.
+    We will add noise to this later.
 
 
-def average21_and_add_noise():
-    config = update_config()
-    run_process("jediaverage", ['./executables/jediaverage']
-    run_process("jedinoise", ['./executables/jedinoise']
-    run_process("jedinoise", ['./executables/jedinoise']
+------------------------------------monochromatic
+def lsst_monochromatic(config):
+    "Add Poissson noise to the convolved-scaled bulge_disk image."
+
+
+-------------------------------------chromatic
+def lsst_chromatic(configb,configd,configm):
+    """Combine lsst_bulge and lsst_disk and add noise."""
+
+
+--------------------------------------Run the loop
+# Get factors to multiply bulge and disk
+fb, fd = np.genfromtxt(configm['bd_flux_rat'], dtype=float, unpack=True)
+
+lsst_TDPCR(configb, configb['psfb'], configb['rescaled_outfileb'],fb)  # out 3
+lsst_TDPCR(configd, configd['psfd'], configd['rescaled_outfiled'],fd)  # out 4
+lsst_TDPCR(configm, configm['psfm'], configm['rescaled_outfilem'],1.0) # out 5
+
+
+# get final monochromatic image
+# jedisim_out/out0/scaled_bulge_disk/trial1_lsst_mono.fits # main out 2
+lsst_monochromatic(configm)
+
+# get final chromatic image
+# jedisim_out/out0/scaled_bulge_disk/trial1_lsst.fits # main out 1
+lsst_chromatic(configb,configd,configm)
 ```
 
 # Jedisim  v3.0
@@ -76,14 +98,14 @@ The new file structure is given below
   - jedisim.py
   - run_jedisim.py
   - util.py
-  
+
   Terminologies:
   NUMGAL = Number of base galaxies used. (We have used 201 galaxies here. 0-200 inclusive)
   BDM    = Bulge, disk, and monochromatic.
 
 <!-- #*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* -->
 ## 1: Generate Physics Config file
-The script `a01_jedisim_config.py` reads the config file 
+The script `a01_jedisim_config.py` reads the config file
 `physics_settins/config_template.sh` and creates config
 files for bulge, disk, and monochormatic cases  for a given redshift.
 It will create three text files:
@@ -94,9 +116,7 @@ It will create three text files:
 
 <!-- #*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* -->
 ## 2: Interpolate given sed file
-The script `a02_interpolate_sed.py` reads two SED files, each for bulge and disk, 
-then interpolates the flux with wavelength step size of 1 Angstrom and writes out the 
-interpolated sed files. Our original input SED files have flux for 1 to 12 Gyr ages. For a given redshift we first estimate the age of the star using flat LambdaCDM model of cosmology. 
+The script `a02_interpolate_sed.py` reads two SED files, each for bulge and disk, then interpolates the flux with wavelength step size of 1 Angstrom and writes out the interpolated sed files. Our original input SED files have flux for 1 to 12 Gyr ages. For a given redshift we first estimate the age of the star using flat LambdaCDM model of cosmology.
 
 For example, using flat LambdaCDM model for redshift 1.5 galaxy which was assumed to be born at redshift 4.0 , we have following statistics:
 
@@ -124,13 +144,12 @@ and outputs are:
 The output interpolated sed file has one wavelength column and two flux columns.
 The first column is the wavelength in Angstrom unit.
 The second column is the flux for a given redshift (e.g. 1.5).
-The third column is the flux for 12 Gyr old galaxy. 
+The third column is the flux for 12 Gyr old galaxy.
 Here, in the above example for the redshift 1.5, second column is the flux column of age 3 Gyr and third column is the last column of original input sed file. The second column of flux changes for redshifts but the last column is always the
 12 Gyr flux.
 <!-- #*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-*-* -->
 ## 3: Create bulge and disk factors (to create scaled galaxies at redshift z)
-The script `a03_scaled_bd_factors.py` creates a text file containing the values 
-for bulge factor and disk factors to be used by next program `a04_scaled_gals.py`
+The script `a03_scaled_bd_factors.py` creates a text file containing the values for bulge factor and disk factors to be used by next program `a04_scaled_gals.py`
 
 **3a**: find the flux ratio of LSST to HST
 $$
@@ -156,18 +175,17 @@ lamh0  = ( 8333 - (2511/2) ) / (1 + z_cutout) # 7077.5 / 1.2 = 5897.9 = 5898
 lamh20 = ( 8333 + (2511/2) ) / (1 + z_cutout) # 9588.5 / 1.2 = 7990.4 = 7990
 ```
 
-We get the flux column from the interpolated sed files. The first column of 
-interpolated sed file is for lsst and the second column is for hst.
+We get the flux column from the interpolated sed files. The first column of interpolated sed file is for lsst and the second column is for hst.
 
 The original sed file has flux for galaxies of age 1Gyr to 12 Gyrs.
 For example for exponential disk we have the fluxes for wavelenght 1000 Angstrom
-is shown below: 
+is shown below:
 ```python
-# Wavelen 1Gyr         2Gyr         3Gyr         4Gyr         5Gyr      
+# Wavelen 1Gyr         2Gyr         3Gyr         4Gyr         5Gyr
 # lambda  flux[0]      flux[1]      flux[2]      flux[3]      flux[4]
 1000    2.125075e-05 1.905875e-05 1.706275e-05 1.527475e-05 1.36735e-05
-				
-# Wavelen 6Gyr       7Gyr         8Gyr       9Gyr        10Gyr     11Gyr       12Gyr                 
+
+# Wavelen 6Gyr       7Gyr         8Gyr       9Gyr        10Gyr     11Gyr       12Gyr
 # lambda  flux[5]    flux[6]      flux[7]    flux[8]     flux[9]   flux[10]    flux[11]
 1000    1.224e-05  1.095675e-05 9.8095e-06 8.78425e-06 7.868e-06 7.04975e-06 6.319e-06
 ```
@@ -185,8 +203,7 @@ Age of Galaxy   for z =  1.5 is     3 Gyr
 So we choose the 3 Gyr galaxy, namely flux[2] from this sed file.
 For the HST case we always choose the last 12 Gyr flux column.
 
-Once we found the wavelenghts and flux columns then we calculated the above 
-integrals.
+Once we found the wavelenghts and flux columns then we calculated the above integrals.
 
 **3b**: Find the total fluxes of bulge, disk and hst for all the galaxies:
 $$
@@ -261,8 +278,7 @@ In the actual simulation, the final names are following:
 `Upto 200.fits.`
 
 ## 5: Create bulge and disk weights (for psf at redshift z)
-The script `a05_bd_weights_psf.py` takes in interpolated sed files and creates 
-a text file called `physics_settings/bd_weights_z1.5.txt` containing the weights
+The script `a05_bd_weights_psf.py` takes in interpolated sed files and creates  a text file called `physics_settings/bd_weights_z1.5.txt` containing the weights
 for bulge and disk for a given redshift.
 
 The formula to calculate bulge and disk weights is given below:
@@ -326,17 +342,20 @@ has only two numbers.
 We use the script `a07_psf_bdmono.py`  to create the PSF for the scaled bulge, scaled disk and monochromatic images of the galaxy.
 I.e.
 
-$$
-\begin{eqnarray}
-p_b = \frac{b0*p0 + b1*p1 + ... + b20*p20}{b0 + b1 + ... + b20} \\
-p_d = \frac{d0*p0 + d1*p1 + ... + d20*p20}{d0 + d1 + ... + d20} \\
-p_m = f_{rd} \ p_d + f_{rb} \ p_b
-\end{eqnarray}
-$$
+```
+p_b = b0p0 + b1p1 + ... + b20p20
+      ---------------------------
+      b0 + b1 + ... + b20
+
+p_d = d0p0 + d1p1 + ... + d20p20
+      --------------------------
+      d0 + d1 + ... + d20
+
+p_m = f_rd * p_d + f_rb * p_b
+```
 
 
-Here all the narrowbands PSFs p0, p1, ..., p20 are all normalized and have the 
-same total flux.
+Here all the narrowbands PSFs p0, p1, ..., p20 are all normalized and have the same total flux.
 
 In the end, we create three psf files `psf/psfb.fits`, `psf/psfd.fits`, `psf/psfm.fits`.
 <!-- #*-*-*-*--*-*-*-*-*-*-*-* -->
