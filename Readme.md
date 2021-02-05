@@ -449,12 +449,10 @@ lsst monochromatic file as
 `jedisim_out/out0/scaled_bulge_disk/trial1_lsst.fits `
 
 Schematically we can write:
-$$
- \begin{eqnarray}
- monochromatic = g_{csm} + Noise \\
-chromatic = (g_{csb} + g_{csd}) + Noise\\
-\end{eqnarray}
-$$
+```
+monochromatic = g_csm + Noise
+chromatic     = (g_csb + g_csd) + Noise
+```
 
 **Outputs of Jedisim Program:**
 For a given redshift we have three scaled psf files $p_b$, $p_d$, and $p_m$.
