@@ -42,15 +42,12 @@ The bulge and disk component are created using galfit program.
 
 ```python
 lsst_TDPCR(config, psf_name, rescaled_outfile,multiply_value)
-T = transformed
+T = transform
 D = distort
 P = paste
 C = convolve
 R = rescale
-Create a single lsst_bulge or lsst_disk or lsst_bulge_disk image
-    images after running 6 programs for an input folder simdatabase/scaled_bulge
-    scaled_disk and scaled_bulge_disk.
-    We will add noise to this later.
+Runs 6 programs and gives bulge,disk, or bulge_disk files one at a time.
 
 
 ------------------------------------monochromatic
@@ -376,8 +373,7 @@ If we run this script `jedisim.py`, we will get two important outputs:
 
 We also get 90 degree rotated version of these outputs.
 
-In addition to these two main outputs some  other outputs are 
-convolved_scaled_bulge, convolved_scaled_disk, catalog.txt, and,
+In addition to these two main outputs some  other outputs are convolved_scaled_bulge, convolved_scaled_disk, catalog.txt, and,
 dislist.txt. We also keep the three psf files.
 
 The three psf files are same for given redshift. However, other files changes
@@ -399,26 +395,21 @@ simdatabase and each folder contains NUM_GAL (201) galaxies.
 We also have 3 psf files inside the psf directory and 3 configuration files
 inside physics_settings folder.
 
-First we run the jedisim routine `lsst_TDCR` to get three convolved scaled fitsfiles, which we call them gcsb, gcsd and gcsm.    
+First we run the jedisim routine `lsst_TDCR` to get three convolved scaled fitsfiles, which we call them gcsb, gcsd and gcsm.
 
 Note that the routine lsst_TDCR consists of four subrotines,viz. transform, distort, convolve, and rescale.
 
-The **transform** routine will transform scaled_bulge or scaled_disk fitsfiles according to `jedisim_out/out0/scaled_bulge/trial1_catalog.txt`. It will create 12,420 .gz fitsfiles. For example, `jedisim_out/out0/scaled_bulge/transformed_0/transformed_0_to_999.fits.gz`  
-inside 13 folders `jedisim_out/out0/scaled_bulge/transformed_0 to stamps_12`.
+The **transform** routine will transform scaled_bulge or scaled_disk fitsfiles according to `jedisim_out/out0/scaled_bulge/trial1_catalog.txt`. It will create 12,420 .gz fitsfiles. For example, `jedisim_out/out0/scaled_bulge/transformed_0/transformed_0_to_999.fits.gz` inside 13 folders `jedisim_out/out0/scaled_bulge/transformed_0 to stamps_12`.
 Jeditransform will also create a  dislist file for the jedidistort, which can be found at `jedisim_out/out0/scaled_bulge/trial1_dislist.txt`.
 
 Then the **distort** routine will distort the 12,420 galaxies from `jedisim_out/out0/scaled_bulge/transformed_0/ to 12`
 according to dislist.txt and lens.txt. It will write 12,420 unzipped fitsfiles inside the 13 folders `jedisim_out/out0/scaled_bulge/distorted_0/ to 12`. Then we combine these distroted images into a large file called
  `jedisim_out/out0/scaled_bulge/trial1_HST.fits` using the routine `jedipaste`.
 
-We use the routine **convolve** to convolve this `HST.fits` file with the `psfb.fits`. First we will get 6 convolved bands 
-(e.g. `jedisim_out/out0/scaled_bulge/convolved/convolved_band_0.fits`) and we will combine them using `jedipaste` and get `jedisim_out/out0/scaled_bulge/trial1_HST_convolved.fits`.
+We use the routine **convolve** to convolve this `HST.fits` file with the `psfb.fits`. First we will get 6 convolved bands (e.g. `jedisim_out/out0/scaled_bulge/convolved/convolved_band_0.fits`) and we will combine them using `jedipaste` and get `jedisim_out/out0/scaled_bulge/trial1_HST_convolved.fits`.
 In case of bulge we call this file g_cb. Similarly we get g_cd and g_cbd.
 
-We use the routine **rescale** to change the PIXSCALE of HST (0.06) to the 
-pixscale of LSST (0.2) to get the convolved-scaled fitsfiles. 
-(e.g. gcsb = `jedisim_out/out0/scaled_bulge/trial1_lsst_bulge.fits`) and so 
-on.
+We use the routine **rescale** to change the PIXSCALE of HST (0.06) to the pixscale of LSST (0.2) to get the convolved-scaled fitsfiles. (e.g. gcsb = `jedisim_out/out0/scaled_bulge/trial1_lsst_bulge.fits`) and so on.
 
 $$
  \begin{eqnarray}
