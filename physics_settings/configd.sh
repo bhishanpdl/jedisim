@@ -30,7 +30,7 @@ ny=12288            # y pixels            (arg for jedidistort)
 pix_scale=0.06      # arseconds per pixel (arg for jedidistort)
 lens_z=0.3          # lens redshift       (arg for jedidistort)
 single_redshift=1   # 0 = not-fixed, 1=fixed
-fixed_redshift=0.7  # the single source galaxy redshift to use (bdfactors, bdweights)
+fixed_redshift=1.5  # the single source galaxy redshift to use (bdfactors, bdweights)
 final_pix_scale=0.2 # LSST pixscale (arcsecords per pixel)
 exp_time=6000       # exposure time in seconds
 noise_mean=10       # mean for poisson noise
@@ -38,7 +38,7 @@ x_border=301        # must be large enough so that no image can overflow_
 y_border=301        # must be large enough so that no image can overflow
 x_trim=480          # larger than x_border to ensure no edge effects
 y_trim=480          # larger than y_border to ensure no edge effects
-num_galaxies=20000  # number of galaxies to simulate 138,000 default
+num_galaxies=10000  # number of galaxies to simulate 138,000 default
 min_mag=22          # minimum magnitude galaxy to simulate (inclusive)
 max_mag=28          # maximum magnitude galaxy to simulate (inclusive)
 power=0.33          # power for the power law galaxy distribution
@@ -108,9 +108,9 @@ red_db_folder="simdatabase/red_db/"
 #------------------- bulge to disk weights -------------------------------------
 # This file will be updated by jedisim_ofiles.py to:
 # bd_weights="physics_settings/bd_weights_z1.5.txt" or so on.
-bd_weights="physics_settings/bd_weights_z0.7.txt" # jedisim_config, jedisimulate
+bd_weights="physics_settings/bd_weights_z1.5.txt" # jedisim_config, jedisimulate
 bd_factors="physics_settings/bd_factors.txt" # jedisim_config, jedisimulate
-bd_flux_rat="physics_settings/bd_flux_rat_z0.7.txt" # fr, frb, frd written by scaled_bd_flux_rat.py
+bd_flux_rat="physics_settings/bd_flux_rat_z1.5.txt" # fr, frb, frd written by scaled_bd_flux_rat.py
 #------------------- rescaled outfiles for jedirescale -------------------------
 rescaled_outfileb="lsst_bulge.fits" # jedisimulate.py  (gcsb galaxy convolved rescaled)
 rescaled_outfiled="lsst_disk.fits" # jedisimulate.py
@@ -189,14 +189,6 @@ num_source_images=201
 # Note that jedicatalog do not create any fitsfiles, it will only read
 # four header keys from them, and creates three text files.
 #-----------------------  source images for jedicatalog  -----------------------
-# For adding fake stars to HST.fits
-# NOTE : On date Apr 5, 2018 Folowing DID NOT worked:
-# processCCD.py Errors:
-# No viable PSF candidates survive: (200,100) (100,200), (200,500),(200,10000)
-# Too many CR pixels:  (200,40000), (200,50000)
-n_stars=100
-star_value=20
-star_positions="physics_settings/star_positions.txt"
 image="simdatabase/scaled_disk_f8/f814w_scaled_disk0.fits"
 image="simdatabase/scaled_disk_f8/f814w_scaled_disk1.fits"
 image="simdatabase/scaled_disk_f8/f814w_scaled_disk2.fits"

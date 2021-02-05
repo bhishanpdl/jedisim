@@ -1,0 +1,5 @@
+# fr = (sum_Fsb/sum_Fsd) / NUM_GALS  where Fsb is sum of fluxes of 201 scaled bulge galaxies.
+# frb = fr/ (1+fr)
+# frd = 1 / (1 + fr)
+# frb                frd   
+0.0002556124875390253    0.999744387512461

@@ -163,8 +163,6 @@ def integrate_flux(infile, wav_start, wav_end):
     # Return Values
     return integral
 
-
-
 def write_bd_weights(config, infileb, infiled,outfile):
     """Calculation of arguments for jedicolor.
 
@@ -204,7 +202,6 @@ Similarly, the weights for disk narrrowbands are calcluated like this:
     # LSST r band 6 Gyr old total range integrals for bulge and disk
     Ilbt =   integrate_flux(infileb, laml[0], laml[21])
     Ildt =   integrate_flux(infiled, laml[0], laml[21])
-
 
     # bulge and disk weights
     b  = np.array(Ilb) / Ilbt

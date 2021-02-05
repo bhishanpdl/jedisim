@@ -333,6 +333,8 @@ p_d = \frac{d0*p0 + d1*p1 + ... + d20*p20}{d0 + d1 + ... + d20} \\
 p_m = f_{rd} \ p_d + f_{rb} \ p_b
 \end{eqnarray}
 $$
+
+
 Here all the narrowbands PSFs p0, p1, ..., p20 are all normalized and have the 
 same total flux.
 

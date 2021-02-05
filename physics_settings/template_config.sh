@@ -38,7 +38,7 @@ x_border=301        # must be large enough so that no image can overflow_
 y_border=301        # must be large enough so that no image can overflow
 x_trim=480          # larger than x_border to ensure no edge effects
 y_trim=480          # larger than y_border to ensure no edge effects
-num_galaxies=20000  # number of galaxies to simulate 138,000 default
+num_galaxies=10000  # number of galaxies to simulate 138,000 default
 min_mag=22          # minimum magnitude galaxy to simulate (inclusive)
 max_mag=28          # maximum magnitude galaxy to simulate (inclusive)
 power=0.33          # power for the power law galaxy distribution
@@ -189,14 +189,3 @@ num_source_images=201
 # Note that jedicatalog do not create any fitsfiles, it will only read
 # four header keys from them, and creates three text files.
 #-----------------------  source images for jedicatalog  -----------------------
-# For adding fake stars to HST.fits
-# We should choose number of stars and value of that single point star.
-# For example, When we run DMStack command processCCD.py on the final output of jedisim
-# if we take not appropriate values we may get these errors:
-# Error 1. No viable PSF candidates survive: (200,100) (100,200), (200,500),(200,10000), etc
-# Error 2. Too many CR pixels:  (200,40000), (200,50000), etc
-#
-# Good values are: n_stars=100 and star_value=20
-n_stars=100
-star_value=20
-star_positions="physics_settings/star_positions.csv"
