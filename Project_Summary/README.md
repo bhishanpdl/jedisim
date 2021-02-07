@@ -64,15 +64,6 @@ We divide by 1+z = 1+1.5 to get 2208A to 2764A.
 We break this into 21 parts (making integers).
 The first narrowband is 2208A to 2234A. We take the sum of flux from "ssp_pf_interpolated_z1.5.csv" and call it b0 and similarly we integrate the wavelengths of 1st narrowband from file "exp9_pf_interpolated.csv" and call it d0.
 ```
-## Create star file
-- Loguniform distribution from e3 to e7 and get 300 stars.
-- This star.fits file does not depend on redshift.
-
-## PSF for Jedisim
-- We have single star.fits.
-- We have 3 scaled psf files: psfb.fits, psfd.fits, psfm.fits.
-- We convolve these 3 psf files with the star and get image size 12288 and then rescale with LSST pixscale of 0.2 to get final size of 3398.
-- The jedisim outputs also have the final shape 3398,3398.
 
 # Jedisim Simulation
 

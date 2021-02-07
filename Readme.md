@@ -310,7 +310,7 @@ $$
 
 Here, $F_{sb}$ is the flux of the given scaled bulge,
 $F_{sd}$ is the flux of the given scaled disk and $n_g$ is number of galaxies.
-For example n_g = 201.
+For example $n_g$ = 201.
 
 Then, we calculate disk part and bulge part of f_r as:
 ```python
@@ -321,8 +321,7 @@ f_rb = f_r / (1 + f_r)
 For example, for redshift z = 1.5 I got the values:
 `fr = 0.0022, frb = 0.0021, and frd = 0.99785444`.
 
-In the end we get a text file `physics_settings/bd_flux_rat.txt` which
-has only two numbers.
+In the end we get a text file `physics_settings/bd_flux_rat.txt` which has only two numbers.
 
 ## 7: Create PSF for bulge, disk, and mono
 We use the script `a07_psf_bdmono.py`  to create the PSF for the scaled bulge, scaled disk and monochromatic images of the galaxy.
